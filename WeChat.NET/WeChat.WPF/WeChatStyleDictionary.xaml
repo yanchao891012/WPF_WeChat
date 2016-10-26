@@ -1,0 +1,253 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+                    xmlns:local="clr-namespace:WeChat.WPF"
+                    xmlns:conver="clr-namespace:WeChat.WPF.Conver">
+    <conver:NullConvertVisibility x:Key="NullToVisibility"/>
+    <conver:ObjectConvertColor x:Key="objectToColor"/>
+    <conver:ObjectConvertHeight x:Key="objectToHeight"/>
+    <conver:BoolConvertVisibility x:Key="boolToVisibility"/>
+
+    <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+    <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+    <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+    <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+    <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+    <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+    <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+    <!--关闭按钮的样式-->
+    <Style x:Key="CloseStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="grid_content" Background="{TemplateBinding Background}">
+                        <Grid VerticalAlignment="Center" Height="10" Width="10">
+                            <Path Stroke="Gray"  StrokeThickness="1" Data="M0,0 L7,7" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Path Stroke="Gray"  StrokeThickness="1" Data="M7,0 L0,7" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="grid_content" Property="Background" Value="#FFEA4A56"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--最大化按钮样式-->
+    <Style x:Key="MaximizeStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="grid_content" Background="{TemplateBinding Background}">
+                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Gray" StrokeThickness="1" Data="M0,0 L7,0 L7,7 L0,7Z"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="grid_content" Property="Background" Value="#FFE5E5E5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+                
+        </Setter>
+    </Style>
+
+    <!--正常大小按钮样式-->
+    <Style x:Key="NormizeStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="grid_content" Background="{TemplateBinding Background}">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Gray" StrokeThickness="1" Data="M0,0 L7,0 L7,7 L0,7Z"/>
+                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Gray" StrokeThickness="1" Data="M3,-2 L3,-4 L10,-4 L10,3 L8,3"/>
+                        </Grid>                        
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="grid_content" Property="Background" Value="#FFE5E5E5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+
+        </Setter>
+    </Style>
+
+    <!--最小化按钮样式-->
+    <Style x:Key="MinimizeStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="grid_content" Background="{TemplateBinding Background}">
+                        <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Gray" StrokeThickness="1" Data="M0,0 L7,0"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="grid_content" Property="Background" Value="#FFE5E5E5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+
+        </Setter>
+    </Style>
+
+    <Style x:Key="NormalStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+    <!--通讯录列表样式-->
+    <Style x:Key="ListBoxItemFriendStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border>
+                        <StackPanel Orientation="Horizontal" Height="{Binding Converter={StaticResource objectToHeight}}" Background="{Binding Converter={StaticResource objectToColor}}">
+                            <TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource NullToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
+                            <TextBlock Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ButtonFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--聊天按钮的样式-->
+    <Style x:Key="ChatStyle" TargetType="{x:Type RadioButton}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border>
+                        <Path x:Name="btnPath" Stretch="Fill" StrokeThickness="1" Stroke="Gray" Fill="#FF3E3E40">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <PathGeometry Figures="M 4,40 A 16,13 0 1 1 10,45 L 3,48 Z" />
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Fill" Value="#FF14D212" TargetName="btnPath"/>
+                            <Setter Property="Stroke" Value="#FF14D212" TargetName="btnPath"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Stroke" Value="White" TargetName="btnPath"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked"  Value="true"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Stroke" Value="#FF14D212" TargetName="btnPath"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--通讯录的样式-->
+    <Style x:Key="FriendStyle" TargetType="{x:Type RadioButton}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border>
+                        <Path x:Name="btnPath" Stretch="Fill" StrokeThickness="1" Stroke="Gray" Fill="#FF3E3E40">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <PathGeometry Figures="M 12,30 A 6,10 0 1 1 18,30 L 30,40 L 30,45 L 0,45 L 0,40Z" />
+                                    <PathGeometry Figures="M 25,25 L 35,25"/>
+                                    <PathGeometry Figures="M 28,30 L 35,30"/>
+                                    <PathGeometry Figures="M 32,35 L 35,35"/>
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Fill" Value="#FF14D212" TargetName="btnPath"/>
+                            <Setter Property="Stroke" Value="#FF14D212" TargetName="btnPath"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Stroke" Value="White" TargetName="btnPath"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="true"/>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Stroke" Value="#FF14D212" TargetName="btnPath"/>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

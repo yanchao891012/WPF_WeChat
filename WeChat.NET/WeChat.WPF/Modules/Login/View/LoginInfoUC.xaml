@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="WeChat.WPF.Modules.Login.View.LoginInfoUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WeChat.WPF.Modules.Login.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ComManage="clr-namespace:WeChat.WPF.Modules.ComManage"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="280"
+             DataContext="{Binding Source={x:Static ComManage:WeChatViewModelLocator.Instance},Path=LoginViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Image Source="{Binding HeadImageSource}" Grid.Row="0"/>
+        <TextBlock Text="扫描成功" Grid.Row="2" Style="{StaticResource NormalStyle}"/>
+        <TextBlock Text="请在手机上确认登录" Grid.Row="3" Style="{StaticResource NormalStyle}"/>
+        <TextBlock Text="返回扫二维码登录" Grid.Row="4" Style="{StaticResource NormalStyle}" Foreground="LightBlue" Cursor="Hand">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding ReturnQRCodeCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBlock>
+    </Grid>
+</UserControl>

@@ -45,3 +45,12 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/WeChat.NET/WeChat.WPF/bin/x86/Debug
+/WeChat.NET/WeChat.Tools/bin/x86/Debug
+/WeChat.NET/WeChat.HTTP/bin/x86/Debug
+/WeChat.NET/WeChat.WPF/obj/x86/Debug
+/WeChat.NET/WeChat.Tools/obj/x86/Debug
+/WeChat.NET/WeChat.HTTP/obj/x86/Debug
+/WeChat.NET/WeChat.WPF/obj/Debug
+/WeChat.NET/WeChat.Tools/obj/Debug
+/WeChat.NET/WeChat.HTTP/obj/Debug
