@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -19,9 +21,10 @@ namespace WeChat.WPF.Modules.Main.View
     /// </summary>
     public partial class MainUC : Window
     {
+        //Rect rcnormal;
         public MainUC()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
         /// <summary>
         /// 鼠标左键拖动
@@ -40,7 +43,8 @@ namespace WeChat.WPF.Modules.Main.View
         /// <param name="e"></param>
         private void btn_close_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            WindowState = WindowState.Minimized;
+            ShowInTaskbar = false;
         }
         /// <summary>
         /// 最大化
@@ -72,7 +76,6 @@ namespace WeChat.WPF.Modules.Main.View
             WindowState = WindowState.Minimized;
         }
 
-        int i = 0;
         /// <summary>
         /// 双击最大化或者是还原
         /// </summary>
@@ -80,11 +83,11 @@ namespace WeChat.WPF.Modules.Main.View
         /// <param name="e"></param>
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount==2)
+            if (e.ClickCount == 2)
             {
                 WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
                 ShowOrhide();
-            }            
+            }
         }
         /// <summary>
         /// 显示或者隐藏按钮
@@ -107,5 +110,40 @@ namespace WeChat.WPF.Modules.Main.View
                     break;
             }
         }
+
+        #region 系统托盘
+        //系统启动的时候给个初始化为Normal
+        WindowState lastWindowState = WindowState.Normal;
+        /// <summary>
+        /// 状态变更
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnStateChanged(EventArgs e)
+        {
+            this.lastWindowState = WindowState == WindowState.Minimized ? lastWindowState : WindowState;
+        }
+        
+        private void Open()
+        {
+            WindowState = lastWindowState;
+            ShowInTaskbar = true;
+            Show();
+        }
+
+        private void MenuItem_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void NotificationAreaIcon_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Open();
+            }
+        }
+        #endregion
+
+        
     }
 }

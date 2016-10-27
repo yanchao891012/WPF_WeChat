@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeChat.WPF.Modules.Main.View"
         xmlns:ComManage="clr-namespace:WeChat.WPF.Modules.ComManage"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:controls="clr-namespace:WeChat.WPF.Controls"
         mc:Ignorable="d"
         Title="MainUC" Height="612" Width="852" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={x:Static ComManage:WeChatViewModelLocator.Instance},Path=MainViewModel}"
@@ -48,6 +50,11 @@
                     <Button x:Name="btn_normal" Height="35" Width="28" Visibility="Collapsed" Style="{StaticResource NormizeStyle}" Click="btn_normal_Click"/>
                     <Button x:Name="btn_max" Height="35" Width="28" Style="{StaticResource MaximizeStyle}" Click="btn_max_Click"/>
                     <Button x:Name="btn_close" Height="35" Width="35" Style="{StaticResource CloseStyle}" Click="btn_close_Click"/>
+                    <controls:NotificationAreaIcon Text="WPF微信" Icon="/Image/Wechat.ico" MouseClick="NotificationAreaIcon_MouseClick">
+                        <controls:NotificationAreaIcon.MenuItems>
+                            <forms:MenuItem Text="退出" Click="MenuItem_Click" DefaultItem="True"/>
+                        </controls:NotificationAreaIcon.MenuItems>
+                    </controls:NotificationAreaIcon>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
