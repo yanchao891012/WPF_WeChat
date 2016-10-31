@@ -7,6 +7,8 @@
         xmlns:ComManage="clr-namespace:WeChat.WPF.Modules.ComManage"
         xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:controls="clr-namespace:WeChat.WPF.Controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mv="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="MainUC" Height="612" Width="852" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={x:Static ComManage:WeChatViewModelLocator.Instance},Path=MainViewModel}"
@@ -30,9 +32,15 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--聊天列表-->
-            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_latest}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0"/>
+            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_latest}" SelectedItem="{Binding Select_Contact_latest}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <mv:EventToCommand Command="{Binding ChatCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
             <!--通讯录-->
-            <ListBox Grid.Row="1" ItemsSource="{Binding Contact_all}" Visibility="{Binding ElementName=rb_friend,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0"/>
+            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_friend,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_all}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0"/>
         </Grid>
         <Grid Grid.Column="2" Background="WhiteSmoke">
             <Grid.RowDefinitions>
@@ -45,6 +53,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding UserName}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="15" Grid.ColumnSpan="2"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Button x:Name="btn_min" Height="35" Width="28" Style="{StaticResource MinimizeStyle}" Click="btn_min_Click"/>
                     <Button x:Name="btn_normal" Height="35" Width="28" Visibility="Collapsed" Style="{StaticResource NormizeStyle}" Click="btn_normal_Click"/>
@@ -58,9 +67,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                <ItemsControl>
-                    
-                </ItemsControl>
+                <ListBox ItemsSource="{Binding}" Style="{StaticResource ChatListBoxStyle}"/>
             </Grid>
         </Grid>
     </Grid>

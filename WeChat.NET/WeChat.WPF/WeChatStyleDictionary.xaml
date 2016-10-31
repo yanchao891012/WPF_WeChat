@@ -136,14 +136,22 @@
     <Style x:Key="ListBoxItemFriendStyle" TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
+                <ControlTemplate TargetType="ListBoxItem">
                     <Border>
-                        <StackPanel Orientation="Horizontal" Height="{Binding Converter={StaticResource objectToHeight}}" Background="{Binding Converter={StaticResource objectToColor}}">
+                        <StackPanel x:Name="sp" Orientation="Horizontal" Height="{Binding Converter={StaticResource objectToHeight}}" Background="{Binding Converter={StaticResource objectToColor}}">
                             <TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource NullToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                             <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
                             <TextBlock Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
                         </StackPanel>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#FFE2E4E6" TargetName="sp"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="#FFCACDD3" TargetName="sp"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -250,4 +258,69 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <LinearGradientBrush x:Key="TextBoxBorder" StartPoint="0,0" MappingMode="Absolute" EndPoint="0,20">
+        <GradientStop Color="#ABADB3" Offset="0.05"/>
+        <GradientStop Color="#E2E3EA" Offset="0.07"/>
+        <GradientStop Color="#E3E9EF" Offset="1"/>
+    </LinearGradientBrush>
+    <!--圆角聊天内容框-->
+    <Style x:Key="ChatTextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="0">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="3"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>        
+    </Style>
+    <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+    <Style x:Key="ChatListBoxStyle" TargetType="{x:Type ListBox}">
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,15,0,0">
+                            <Image Grid.Column="1" Source="E:\GitHub\WPF_WeChat\WeChat.NET\WeChat.WPF\Image\Wechat.ico" Height="35" Width="35" VerticalAlignment="Top"/>
+                            <Path Grid.Column="2" StrokeThickness="1" Stroke="Green" Data="M12,13 L5,18 L12,23Z" Fill="Green" Margin="0" SnapsToDevicePixels="True"/>
+                            <TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" BorderBrush="Green" Background="Green" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="222"/>
+                        </StackPanel>
+                    </Grid>                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

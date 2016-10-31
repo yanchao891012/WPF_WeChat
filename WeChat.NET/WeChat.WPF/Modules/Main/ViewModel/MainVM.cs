@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Media;
 using WeChat.HTTP;
 using WeChat.WPF.Modules.Main.Model;
@@ -37,6 +38,51 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 _me = value;
                 RaisePropertyChanged("Me");
+            }
+        }
+
+        private WeChatUser _friendUser;
+        /// <summary>
+        ///  聊天好友
+        /// </summary>
+        public WeChatUser FriendUser
+        {
+            get
+            {
+                return _friendUser;
+            }
+
+            set
+            {
+                if (value !=_friendUser)
+                {
+                    if (_friendUser!=null)
+                    {
+                        _friendUser.MsgRecved -= new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
+                        _friendUser.MsgSent -= new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
+                    }
+                    _friendUser = value;
+                    if (_friendUser!=null)
+                    {
+                        _friendUser.MsgRecved += new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
+                        _friendUser.MsgSent += new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
+                        IEnumerable<KeyValuePair<DateTime, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
+                        dic = dic.OrderBy(p => p.Key);
+                        foreach (KeyValuePair<DateTime,WeChatMsg> p in dic)
+                        {
+                            if (p.Value.From==_friendUser.UserName)
+                            {
+                                ShowReceiveMsg(p.Value);
+                            }
+                            else
+                            {
+                                ShowSendMsg(p.Value);
+                            }
+                            p.Value.Readed = true;
+                        }
+                    }
+                }
+                RaisePropertyChanged("FriendUser");
             }
         }
         /// <summary>
@@ -79,8 +125,79 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 RaisePropertyChanged("Contact_latest");
             }
         }
+
+        private object _select_Contact_latest = new object();
+        /// <summary>
+        /// 聊天列表选中
+        /// </summary>
+        public object Select_Contact_latest
+        {
+            get
+            {
+                return _select_Contact_latest;
+            }
+
+            set
+            {
+                _select_Contact_latest = value;
+                RaisePropertyChanged("Select_Contact_latest");
+            }
+        }
+
+        private string _userName = string.Empty;
+        /// <summary>
+        /// 用于在顶部显示用户名
+        /// </summary>
+        public string UserName
+        {
+            get
+            {
+                return _userName;
+            }
+
+            set
+            {
+                _userName = value;
+                RaisePropertyChanged("UserName");
+            }
+        }
+
+        private ImageSource _image;
+
+        public ImageSource Image
+        {
+            get
+            {
+                return _image;
+            }
+
+            set
+            {
+                _image = value;
+                RaisePropertyChanged("Image");
+            }
+        }
+
+        private string _message;
+        /// <summary>
+        /// 显示的内容
+        /// </summary>
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+
+            set
+            {
+                _message = value;
+                RaisePropertyChanged("Message");
+            }
+        }
         #endregion
 
+        #region 方法
         /// <summary>
         /// 初始化
         /// </summary>
@@ -150,7 +267,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 }
             }
 
-            IOrderedEnumerable<object> list_all = contact_all.OrderBy(p => (p as WeChatUser).StartChar).ThenBy(p=>(p as WeChatUser).ShowPinYin.Substring(0, 1));
+            IOrderedEnumerable<object> list_all = contact_all.OrderBy(p => (p as WeChatUser).StartChar).ThenBy(p => (p as WeChatUser).ShowPinYin.Substring(0, 1));
 
             WeChatUser wcu;
             string start_char;
@@ -163,6 +280,18 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                     _contact_all.Add(start_char.ToUpper());
                 }
                 _contact_all.Add(o);
+            }
+
+            string sync_flag = "";
+            JObject sync_result;
+            while (true)
+            {
+                //同步检查
+                sync_flag = wcs.WeChatSyncCheck();
+                if (sync_flag==null)
+                {
+                    continue;
+                }
             }
         }
         /// <summary>
@@ -202,8 +331,8 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         private string GetStartChar(WeChatUser user)
         {
             string start_char;
-           
-            if (user.KeyWord == "gh_" && user.SnsFlag.Equals("0") || user.KeyWord =="cmb")//user.KeyWord =="cmb"是招商银行信用卡，实在找不出区别了
+
+            if (user.KeyWord == "gh_" && user.SnsFlag.Equals("0") || user.KeyWord == "cmb")//user.KeyWord =="cmb"是招商银行信用卡，实在找不出区别了
             {
                 start_char = "公众号";
             }
@@ -216,6 +345,59 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 start_char = string.IsNullOrEmpty(user.ShowPinYin) ? string.Empty : user.ShowPinYin.Substring(0, 1);
             }
             return start_char;
-        }        
+        }
+        #endregion
+
+        #region 聊天事件
+        private RelayCommand _chatCommand;
+        /// <summary>
+        /// 聊天列表的选中事件
+        /// </summary>
+        public RelayCommand ChatCommand
+        {
+            get
+            {
+                return _chatCommand ?? (_chatCommand = new RelayCommand(() =>
+                    {
+                        if (Select_Contact_latest is WeChatUser)
+                            UserName = (Select_Contact_latest as WeChatUser).ShowName;
+                    }));
+            }
+        }
+        /// <summary>
+        /// 表示处理开启聊天事件的方法
+        /// </summary>
+        /// <param name="user"></param>
+        public delegate void StartChatEventHandler(WeChatUser user);
+        public event StartChatEventHandler StartChat;
+
+        /// <summary>
+        /// 发送消息完成
+        /// </summary>
+        /// <param name="msg"></param>
+        void _friendUser_MsgSent(WeChatMsg msg)
+        {
+            ShowSendMsg(msg);
+        }
+        /// <summary>
+        /// 收到新消息
+        /// </summary>
+        /// <param name="msg"></param>
+        void _friendUser_MsgRecved(WeChatMsg msg)
+        {
+            ShowReceiveMsg(msg);
+        }
+
+        private void ShowSendMsg(WeChatMsg msg)
+        {
+            
+        }
+
+        private void ShowReceiveMsg(WeChatMsg msg)
+        {
+            Image = (Select_Contact_latest as WeChatUser).Icon;
+            Message = msg.Msg;
+        }
+        #endregion
     }
 }
