@@ -13,6 +13,11 @@
         Title="MainUC" Height="612" Width="852" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={x:Static ComManage:WeChatViewModelLocator.Instance},Path=MainViewModel}"
         Icon="/Image/Wechat.ico">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <mv:EventToCommand Command="{Binding LoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -67,7 +72,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                <ListBox ItemsSource="{Binding}" Style="{StaticResource ChatListBoxStyle}"/>
+                <ListBox ItemsSource="{Binding ChatList}" Background="WhiteSmoke" Style="{StaticResource ChatListBoxStyle}"/>
             </Grid>
         </Grid>
     </Grid>

@@ -5,15 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using WeChat.HTTP;
 using WeChat.WPF.Modules.Main.Model;
+using System.Collections.ObjectModel;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
     public class MainVM : ViewModelBase
     {
+        WeChatService wcs = new WeChatService();
+
         public MainVM()
         {
             Init();
@@ -54,23 +58,23 @@ namespace WeChat.WPF.Modules.Main.ViewModel
 
             set
             {
-                if (value !=_friendUser)
+                if (value != _friendUser)
                 {
-                    if (_friendUser!=null)
+                    if (_friendUser != null)
                     {
                         _friendUser.MsgRecved -= new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
                         _friendUser.MsgSent -= new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
                     }
                     _friendUser = value;
-                    if (_friendUser!=null)
+                    if (_friendUser != null)
                     {
                         _friendUser.MsgRecved += new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
                         _friendUser.MsgSent += new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
                         IEnumerable<KeyValuePair<DateTime, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
                         dic = dic.OrderBy(p => p.Key);
-                        foreach (KeyValuePair<DateTime,WeChatMsg> p in dic)
+                        foreach (KeyValuePair<DateTime, WeChatMsg> p in dic)
                         {
-                            if (p.Value.From==_friendUser.UserName)
+                            if (p.Value.From == _friendUser.UserName)
                             {
                                 ShowReceiveMsg(p.Value);
                             }
@@ -88,11 +92,11 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// <summary>
         /// 所有好友列表
         /// </summary>
-        private List<object> _contact_all = new List<object>();
+        private ObservableCollection<object> _contact_all = new ObservableCollection<object>();
         /// <summary>
         /// 通讯录
         /// </summary>
-        public List<object> Contact_all
+        public ObservableCollection<object> Contact_all
         {
             get
             {
@@ -108,11 +112,11 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// <summary>
         /// 部分好友列表
         /// </summary>
-        private List<object> _contact_latest = new List<object>();
+        private ObservableCollection<object> _contact_latest = new ObservableCollection<object>();
         /// <summary>
         /// 最近联系人
         /// </summary>
-        public List<object> Contact_latest
+        public ObservableCollection<object> Contact_latest
         {
             get
             {
@@ -162,37 +166,21 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             }
         }
 
-        private ImageSource _image;
-
-        public ImageSource Image
-        {
-            get
-            {
-                return _image;
-            }
-
-            set
-            {
-                _image = value;
-                RaisePropertyChanged("Image");
-            }
-        }
-
-        private string _message;
+        private ObservableCollection<ChatMsg> chatList = new ObservableCollection<ChatMsg>();
         /// <summary>
-        /// 显示的内容
+        /// 聊天列表
         /// </summary>
-        public string Message
+        public ObservableCollection<ChatMsg> ChatList
         {
             get
             {
-                return _message;
+                return chatList;
             }
 
             set
             {
-                _message = value;
-                RaisePropertyChanged("Message");
+                chatList = value;
+                RaisePropertyChanged("ChatList");
             }
         }
         #endregion
@@ -203,7 +191,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// </summary>
         private void Init()
         {
-            WeChatService wcs = new WeChatService();
             //初始化
             JObject init_result = wcs.WeChatInit();
 
@@ -281,18 +268,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 }
                 _contact_all.Add(o);
             }
-
-            string sync_flag = "";
-            JObject sync_result;
-            while (true)
-            {
-                //同步检查
-                sync_flag = wcs.WeChatSyncCheck();
-                if (sync_flag==null)
-                {
-                    continue;
-                }
-            }
         }
         /// <summary>
         /// 获取头像
@@ -346,9 +321,121 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             }
             return start_char;
         }
+
         #endregion
 
         #region 聊天事件
+        private RelayCommand _loadedCommand;
+        /// <summary>
+        /// 载入
+        /// </summary>
+        public RelayCommand LoadedCommand
+        {
+            get
+            {
+                return _loadedCommand ?? (_loadedCommand = new RelayCommand(() =>
+                    {
+                        Thread listener = new Thread(new ThreadStart(new Action(() =>
+                        {
+                            string sync_flag = "";
+                            JObject sync_result;
+                            while (true)
+                            {
+                                //同步检查
+                                sync_flag = wcs.WeChatSyncCheck();
+                                if (sync_flag == null)
+                                {
+                                    continue;
+                                }
+                                //这里应该判断sync_flag中Selector的值
+                                else
+                                {
+                                    sync_result = wcs.WeChatSync();//进行同步
+                                    if (sync_result != null)
+                                    {
+                                        if (sync_result["AddMsgCount"] != null && sync_result["AddMsgCount"].ToString() != "0")
+                                        {
+                                            foreach (JObject m in sync_result["AddMsgList"])
+                                            {
+                                                string from = m["FromUserName"].ToString();
+                                                string to = m["ToUserName"].ToString();
+                                                string content = m["Content"].ToString();
+                                                string type = m["MsgType"].ToString();
+
+                                                WeChatMsg msg = new WeChatMsg();
+                                                msg.From = from;
+                                                msg.Msg = type == "1" ? content : "请在其他设备上查看消息";//只接受文本消息
+                                                msg.Readed = false;
+                                                msg.Time = DateTime.Now;
+                                                msg.To = to;
+                                                msg.Type = int.Parse(type);
+
+                                                if (msg.Type == 51)//屏蔽一些系统数据
+                                                {
+                                                    continue;
+                                                }
+
+                                                Application.Current.Dispatcher.BeginInvoke((Action)delegate ()
+                                                {
+                                                    WeChatUser user;
+                                                    bool exist_latest_contact = false;
+                                                    foreach (object u in Contact_latest)
+                                                    {
+                                                        user = u as WeChatUser;
+                                                        if (user != null)
+                                                        {
+                                                            //接收别人消息
+                                                            if (user.UserName == msg.From && msg.To == _me.UserName)
+                                                            {
+                                                                Contact_latest.Remove(user);
+                                                                Contact_latest.Insert(0, user);
+                                                                exist_latest_contact = true;
+                                                                user.ReceivedMsg(msg);
+                                                                break;
+                                                            }
+                                                            //同步自己在其他设备上发送的消息
+                                                            else if (user.UserName == msg.To && msg.From == _me.UserName)
+                                                            {
+                                                                Contact_latest.Remove(user);
+                                                                Contact_latest.Insert(0, user);
+                                                                exist_latest_contact = true;
+                                                                user.SendMsg(msg, true);
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    if (!exist_latest_contact)
+                                                    {
+                                                        foreach (object o in Contact_all)
+                                                        {
+                                                            WeChatUser friend = o as WeChatUser;
+                                                            if (friend != null && friend.UserName == msg.From && msg.To == _me.UserName)
+                                                            {
+                                                                Contact_latest.Insert(0, friend);
+                                                                friend.ReceivedMsg(msg);
+                                                                break;
+                                                            }
+                                                            if (friend != null && friend.UserName == msg.To && msg.From == _me.UserName)
+                                                            {
+                                                                Contact_latest.Insert(0, friend);
+                                                                friend.SendMsg(msg, true);
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                                System.Threading.Thread.Sleep(10);
+                            }
+                        })));
+                        listener.Start();
+                    }));
+            }
+        }
+
         private RelayCommand _chatCommand;
         /// <summary>
         /// 聊天列表的选中事件
@@ -360,7 +447,15 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 return _chatCommand ?? (_chatCommand = new RelayCommand(() =>
                     {
                         if (Select_Contact_latest is WeChatUser)
+                        {
                             UserName = (Select_Contact_latest as WeChatUser).ShowName;
+
+                            ChatMsg chatmsg = new ChatMsg();
+                            chatmsg.Image = (Select_Contact_latest as WeChatUser).Icon;
+                            chatmsg.Message = "测试";
+                            chatmsg.FlowDir = FlowDirection.LeftToRight;
+                            ChatList.Add(chatmsg);
+                        }
                     }));
             }
         }
@@ -390,13 +485,16 @@ namespace WeChat.WPF.Modules.Main.ViewModel
 
         private void ShowSendMsg(WeChatMsg msg)
         {
-            
+
         }
 
         private void ShowReceiveMsg(WeChatMsg msg)
         {
-            Image = (Select_Contact_latest as WeChatUser).Icon;
-            Message = msg.Msg;
+            ChatMsg chatmsg = new ChatMsg();
+            chatmsg.Image = (Select_Contact_latest as WeChatUser).Icon;
+            chatmsg.Message = msg.Msg;
+            chatmsg.FlowDir = FlowDirection.LeftToRight;
+            ChatList.Add(chatmsg);
         }
         #endregion
     }
