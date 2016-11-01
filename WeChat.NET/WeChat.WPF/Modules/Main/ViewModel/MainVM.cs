@@ -449,12 +449,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                         if (Select_Contact_latest is WeChatUser)
                         {
                             UserName = (Select_Contact_latest as WeChatUser).ShowName;
-
-                            ChatMsg chatmsg = new ChatMsg();
-                            chatmsg.Image = (Select_Contact_latest as WeChatUser).Icon;
-                            chatmsg.Message = "测试";
-                            chatmsg.FlowDir = FlowDirection.LeftToRight;
-                            ChatList.Add(chatmsg);
                         }
                     }));
             }
