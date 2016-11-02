@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 
 namespace WeChat.Tools.Helpers
 {
-    public class ImageHepler
+    public class ImageHelper
     {
         /// <summary>
         /// Memory转成ImageSource

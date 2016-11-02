@@ -52,7 +52,7 @@ namespace WeChat.HTTP
         public ImageSource GetIcon(string username, string url = StaticUrl.Url_GetIcon)
         {
             byte[] bytes = BaseService.Request(url + username, MethodEnum.GET);
-            return ImageHepler.MemoryToImageSourceOther(new MemoryStream(bytes));
+            return ImageHelper.MemoryToImageSourceOther(new MemoryStream(bytes));
         }
         /// <summary>
         /// 获取好友列表

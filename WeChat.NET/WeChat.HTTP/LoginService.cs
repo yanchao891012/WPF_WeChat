@@ -35,7 +35,7 @@ namespace WeChat.HTTP
             //bi.StreamSource = new MemoryStream(bytes);
             //bi.EndInit();
             //return bi;
-            return ImageHepler.MemoryToImageSource(new MemoryStream(bytes));
+            return ImageHelper.MemoryToImageSource(new MemoryStream(bytes));
         }
         /// <summary>
         /// 登录扫描检测
@@ -62,7 +62,7 @@ namespace WeChat.HTTP
                 MemoryStream memoryStream = new MemoryStream(base64_image_bytes, 0, base64_image_bytes.Length);
                 //memoryStream.Write(base64_image_bytes, 0, base64_image_bytes.Length);
                 //转成图片
-                return ImageHepler.MemoryToImageSource(memoryStream);
+                return ImageHelper.MemoryToImageSource(memoryStream);
             }
             //注：如果用超时的话，会有问题，后期再研究
             //else if (login_result.Contains("=" + StaticCode.LoginCode.code_LoginTimeOut))

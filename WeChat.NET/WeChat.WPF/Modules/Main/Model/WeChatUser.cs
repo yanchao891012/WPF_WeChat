@@ -297,7 +297,7 @@ namespace WeChat.WPF.Modules.Main.Model
         /// <param name="msg"></param>
         public void ReceivedMsg(WeChatMsg msg)
         {
-            _recvedMsg.Add(msg.Time, msg);
+            _recvedMsg.Add(msg.Time.AddMilliseconds(msg.Time.Millisecond), msg);
             if (MsgRecved!=null)
             {
                 MsgRecved(msg);

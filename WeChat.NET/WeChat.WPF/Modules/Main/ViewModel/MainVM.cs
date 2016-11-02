@@ -11,6 +11,7 @@ using System.Windows.Media;
 using WeChat.HTTP;
 using WeChat.WPF.Modules.Main.Model;
 using System.Collections.ObjectModel;
+using WeChat.Tools.Helpers;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
@@ -92,11 +93,11 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// <summary>
         /// 所有好友列表
         /// </summary>
-        private ObservableCollection<object> _contact_all = new ObservableCollection<object>();
+        private List<object> _contact_all = new List<object>();
         /// <summary>
         /// 通讯录
         /// </summary>
-        public ObservableCollection<object> Contact_all
+        public List<object> Contact_all
         {
             get
             {
@@ -449,6 +450,8 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                         if (Select_Contact_latest is WeChatUser)
                         {
                             UserName = (Select_Contact_latest as WeChatUser).ShowName;
+                            ChatList.Clear();
+                            FriendUser = Select_Contact_latest as WeChatUser;
                         }
                     }));
             }
@@ -481,11 +484,25 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         {
 
         }
-
+        /// <summary>
+        /// 显示收到的信息
+        /// </summary>
+        /// <param name="msg"></param>
         private void ShowReceiveMsg(WeChatMsg msg)
         {
             ChatMsg chatmsg = new ChatMsg();
-            chatmsg.Image = (Select_Contact_latest as WeChatUser).Icon;
+
+            foreach (var item in Contact_all)
+            {
+                if (item is WeChatUser)
+                {
+                    if ((item as WeChatUser).UserName == msg.From)
+                    {
+                        chatmsg.Image = (item as WeChatUser).Icon;
+                        break;
+                    }
+                }
+            }
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.LeftToRight;
             ChatList.Add(chatmsg);

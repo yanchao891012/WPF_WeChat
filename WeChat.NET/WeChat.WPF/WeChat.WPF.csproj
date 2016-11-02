@@ -178,6 +178,10 @@
       <Project>{5f956b4a-d064-4668-a181-d02c37fc639e}</Project>
       <Name>WeChat.HTTP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WeChat.Tools\WeChat.Tools.csproj">
+      <Project>{f2f079e7-fc21-4f84-ae1a-269e8fd47dc3}</Project>
+      <Name>WeChat.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\Wechat.ico" />
