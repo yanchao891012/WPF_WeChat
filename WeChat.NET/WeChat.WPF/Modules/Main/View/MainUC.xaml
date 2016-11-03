@@ -72,7 +72,7 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                <ListBox ItemsSource="{Binding ChatList}" Background="WhiteSmoke" Style="{StaticResource ChatListBoxStyle}"/>
+                <controls:ScrollingListBox ItemsSource="{Binding ChatList}" Background="WhiteSmoke"  Style="{StaticResource ChatListBoxStyle}"/>
             </Grid>
         </Grid>
     </Grid>

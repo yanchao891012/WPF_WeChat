@@ -288,7 +288,7 @@
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
-        </Setter>        
+        </Setter>
     </Style>
     <SolidColorBrush x:Key="ListBorder" Color="#FFEAEAEA"/>
     <Style x:Key="ChatListBoxStyle" TargetType="{x:Type ListBox}">
@@ -320,7 +320,14 @@
                     </Grid>                    
                 </DataTemplate>
             </Setter.Value>
-        </Setter>        
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Focusable" Value="False"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
     </Style>
-
+    
 </ResourceDictionary>

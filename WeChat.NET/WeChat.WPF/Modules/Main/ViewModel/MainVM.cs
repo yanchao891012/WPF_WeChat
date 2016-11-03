@@ -71,9 +71,9 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                     {
                         _friendUser.MsgRecved += new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
                         _friendUser.MsgSent += new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
-                        IEnumerable<KeyValuePair<DateTime, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
+                        IEnumerable<KeyValuePair<long, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
                         dic = dic.OrderBy(p => p.Key);
-                        foreach (KeyValuePair<DateTime, WeChatMsg> p in dic)
+                        foreach (KeyValuePair<long, WeChatMsg> p in dic)
                         {
                             if (p.Value.From == _friendUser.UserName)
                             {
@@ -367,7 +367,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                                 msg.From = from;
                                                 msg.Msg = type == "1" ? content : "请在其他设备上查看消息";//只接受文本消息
                                                 msg.Readed = false;
-                                                msg.Time = DateTime.Now;
+                                                msg.Time = DateTime.Now.Ticks;
                                                 msg.To = to;
                                                 msg.Type = int.Parse(type);
 
@@ -429,7 +429,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                         }
                                     }
                                 }
-                                System.Threading.Thread.Sleep(10);
+                                //System.Threading.Thread.Sleep(10);
                             }
                         })));
                         listener.Start();
@@ -491,18 +491,17 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         private void ShowReceiveMsg(WeChatMsg msg)
         {
             ChatMsg chatmsg = new ChatMsg();
-
-            foreach (var item in Contact_all)
+            Contact_all.ForEach(p =>
             {
-                if (item is WeChatUser)
+                if (p is WeChatUser)
                 {
-                    if ((item as WeChatUser).UserName == msg.From)
+                    if ((p as WeChatUser).UserName == msg.From)
                     {
-                        chatmsg.Image = (item as WeChatUser).Icon;
-                        break;
+                        chatmsg.Image = (p as WeChatUser).Icon;
+                        return;
                     }
                 }
-            }
+            });
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.LeftToRight;
             ChatList.Add(chatmsg);

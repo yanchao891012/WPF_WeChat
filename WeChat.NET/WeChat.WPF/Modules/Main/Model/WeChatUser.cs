@@ -254,11 +254,11 @@ namespace WeChat.WPF.Modules.Main.Model
             }
         }
 
-        private Dictionary<DateTime, WeChatMsg> _sentMsg = new Dictionary<DateTime, WeChatMsg>();
+        private Dictionary<long, WeChatMsg> _sentMsg = new Dictionary<long, WeChatMsg>();
         /// <summary>
         /// 发送给对方的消息
         /// </summary>
-        public Dictionary<DateTime, WeChatMsg> SentMsg
+        public Dictionary<long, WeChatMsg> SentMsg
         {
             get
             {
@@ -266,11 +266,11 @@ namespace WeChat.WPF.Modules.Main.Model
             }
         }
 
-        private Dictionary<DateTime, WeChatMsg> _recvedMsg = new Dictionary<DateTime, WeChatMsg>();
+        private Dictionary<long, WeChatMsg> _recvedMsg = new Dictionary<long, WeChatMsg>();
         /// <summary>
         /// 收到对方的消息
         /// </summary>
-        public Dictionary<DateTime, WeChatMsg> RecvedMsg
+        public Dictionary<long, WeChatMsg> RecvedMsg
         {
             get
             {
@@ -297,7 +297,7 @@ namespace WeChat.WPF.Modules.Main.Model
         /// <param name="msg"></param>
         public void ReceivedMsg(WeChatMsg msg)
         {
-            _recvedMsg.Add(msg.Time.AddMilliseconds(msg.Time.Millisecond), msg);
+            _recvedMsg.Add(msg.Time, msg);
             if (MsgRecved!=null)
             {
                 MsgRecved(msg);
@@ -329,7 +329,7 @@ namespace WeChat.WPF.Modules.Main.Model
         public List<WeChatMsg> GetUnReadMsg()
         {
             List<WeChatMsg> list = null;
-            foreach (KeyValuePair<DateTime,WeChatMsg> p in _recvedMsg)
+            foreach (KeyValuePair<long,WeChatMsg> p in _recvedMsg)
             {
                 if (!p.Value.Readed)
                 {

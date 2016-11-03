@@ -24,8 +24,9 @@ namespace WeChat.WPF.Modules.Main.View
         //Rect rcnormal;
         public MainUC()
         {
-            InitializeComponent();            
+            InitializeComponent();           
         }
+        
         /// <summary>
         /// 鼠标左键拖动
         /// </summary>
@@ -142,8 +143,7 @@ namespace WeChat.WPF.Modules.Main.View
                 Open();
             }
         }
-        #endregion
 
-        
+        #endregion
     }
 }
