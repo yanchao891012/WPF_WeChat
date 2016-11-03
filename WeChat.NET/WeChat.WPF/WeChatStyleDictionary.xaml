@@ -301,30 +301,22 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
         <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="ItemTemplate">
-            <Setter.Value>
-                <DataTemplate DataType="ListBoxItem">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,15,0,0">
-                            <Image Grid.Column="1" Source="{Binding Image}" Height="35" Width="35" VerticalAlignment="Top"/>
-                            <Path Grid.Column="2" StrokeThickness="1" Stroke="Green" Data="M12,13 L5,18 L12,23Z" Fill="Green" Margin="0" SnapsToDevicePixels="True"/>
-                            <TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" BorderBrush="Green" Background="Green" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="{Binding Message}"/>
-                        </StackPanel>
-                    </Grid>                    
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>        
         <Setter Property="ItemContainerStyle">
             <Setter.Value>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" FlowDirection="{Binding FlowDir}" Margin="15,5">
+                                    <Image Grid.Column="1" Source="{Binding Image}" Height="35" Width="35" VerticalAlignment="Top"/>
+                                    <Path Grid.Column="2" StrokeThickness="1" Stroke="{Binding TbColor}" Data="M12,13 L5,18 L12,23Z" Fill="{Binding TbColor}" Margin="0" SnapsToDevicePixels="True"/>
+                                    <TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="{Binding Message}"/>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </Setter.Value>
         </Setter>

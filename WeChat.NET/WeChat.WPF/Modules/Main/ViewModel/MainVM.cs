@@ -71,9 +71,9 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                     {
                         _friendUser.MsgRecved += new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
                         _friendUser.MsgSent += new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
-                        IEnumerable<KeyValuePair<long, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
+                        IEnumerable<KeyValuePair<Guid, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
                         dic = dic.OrderBy(p => p.Key);
-                        foreach (KeyValuePair<long, WeChatMsg> p in dic)
+                        foreach (KeyValuePair<Guid, WeChatMsg> p in dic)
                         {
                             if (p.Value.From == _friendUser.UserName)
                             {
@@ -182,6 +182,23 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 chatList = value;
                 RaisePropertyChanged("ChatList");
+            }
+        }
+        /// <summary>
+        /// 发送消息内容
+        /// </summary>
+        private string _sendMessage;
+        public string SendMessage
+        {
+            get
+            {
+                return _sendMessage;
+            }
+
+            set
+            {
+                _sendMessage = value;
+                RaisePropertyChanged("SendMessage");
             }
         }
         #endregion
@@ -367,7 +384,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                                 msg.From = from;
                                                 msg.Msg = type == "1" ? content : "请在其他设备上查看消息";//只接受文本消息
                                                 msg.Readed = false;
-                                                msg.Time = DateTime.Now.Ticks;
+                                                msg.Time = DateTime.Now;
                                                 msg.To = to;
                                                 msg.Type = int.Parse(type);
 
@@ -429,7 +446,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                         }
                                     }
                                 }
-                                //System.Threading.Thread.Sleep(10);
+                                Thread.Sleep(10);
                             }
                         })));
                         listener.Start();
@@ -456,6 +473,33 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                     }));
             }
         }
+
+        private RelayCommand _sendCommand;
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        public RelayCommand SendCommand
+        {
+            get
+            {
+                return _sendCommand ?? (_sendCommand = new RelayCommand(() =>
+                    {
+                        if (!string.IsNullOrEmpty(SendMessage))
+                        {
+                            WeChatMsg msg = new WeChatMsg();
+                            msg.From = _me.UserName;
+                            msg.Readed = false;
+                            msg.To = _friendUser.UserName;
+                            msg.Type = 1;
+                            msg.Msg = SendMessage;
+                            msg.Time = DateTime.Now;
+                            _friendUser.SendMsg(msg, false);
+                            SendMessage = string.Empty;
+                        }
+                    }));
+            }
+        }
+
         /// <summary>
         /// 表示处理开启聊天事件的方法
         /// </summary>
@@ -479,10 +523,19 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         {
             ShowReceiveMsg(msg);
         }
-
+        /// <summary>
+        /// 显示发出的消息
+        /// </summary>
+        /// <param name="msg"></param>
         private void ShowSendMsg(WeChatMsg msg)
         {
-
+            ChatMsg chatmsg = new ChatMsg();
+            chatmsg.Image = _me.Icon;
+            chatmsg.Message = msg.Msg;
+            chatmsg.FlowDir = FlowDirection.RightToLeft;
+            chatmsg.TbColor = (Brush)new BrushConverter().ConvertFromString("#FF98E165");
+            chatmsg.HorAli = HorizontalAlignment.Right;
+            ChatList.Add(chatmsg);
         }
         /// <summary>
         /// 显示收到的信息
@@ -504,6 +557,8 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             });
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.LeftToRight;
+            chatmsg.TbColor = Brushes.White;
+            chatmsg.HorAli = HorizontalAlignment.Left;
             ChatList.Add(chatmsg);
         }
         #endregion

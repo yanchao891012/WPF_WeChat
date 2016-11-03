@@ -74,6 +74,15 @@
             <Grid Grid.Row="1">
                 <controls:ScrollingListBox ItemsSource="{Binding ChatList}" Background="WhiteSmoke"  Style="{StaticResource ChatListBoxStyle}"/>
             </Grid>
+            <Grid Grid.Row="2" Background="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="1" Focusable="True" Margin="10,0" BorderThickness="0" Text="{Binding SendMessage}" TextWrapping="Wrap"/>
+                <Button Grid.Row="2" Command="{Binding SendCommand}" Content="发送(S)" Width="70" Height="30" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

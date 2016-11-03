@@ -58,5 +58,39 @@ namespace WeChat.WPF.Modules.Main.Model
                 _flowDir = value;
             }
         }
+
+        private Brush _tbColor;
+        /// <summary>
+        /// 显示的背景颜色
+        /// </summary>
+        public Brush TbColor
+        {
+            get
+            {
+                return _tbColor;
+            }
+
+            set
+            {
+                _tbColor = value;
+            }
+        }
+
+        private HorizontalAlignment _horAli;
+        /// <summary>
+        /// 横向对齐方式
+        /// </summary>
+        public HorizontalAlignment HorAli
+        {
+            get
+            {
+                return _horAli;
+            }
+
+            set
+            {
+                _horAli = value;
+            }
+        }
     }
 }

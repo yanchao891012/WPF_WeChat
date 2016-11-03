@@ -12,7 +12,7 @@ namespace WeChat.WPF.Modules.Main.Model
     {
         private string _from;
         private string _to;
-        private long _time;
+        private DateTime _time;
         private bool _readed;
         private string _msg;
         private int _type;
@@ -49,7 +49,7 @@ namespace WeChat.WPF.Modules.Main.Model
         /// <summary>
         /// 消息发送时间
         /// </summary>
-        public long Time
+        public DateTime Time
         {
             get
             {

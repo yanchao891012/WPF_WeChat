@@ -254,11 +254,11 @@ namespace WeChat.WPF.Modules.Main.Model
             }
         }
 
-        private Dictionary<long, WeChatMsg> _sentMsg = new Dictionary<long, WeChatMsg>();
+        private Dictionary<Guid, WeChatMsg> _sentMsg = new Dictionary<Guid, WeChatMsg>();
         /// <summary>
         /// 发送给对方的消息
         /// </summary>
-        public Dictionary<long, WeChatMsg> SentMsg
+        public Dictionary<Guid, WeChatMsg> SentMsg
         {
             get
             {
@@ -266,11 +266,11 @@ namespace WeChat.WPF.Modules.Main.Model
             }
         }
 
-        private Dictionary<long, WeChatMsg> _recvedMsg = new Dictionary<long, WeChatMsg>();
+        private Dictionary<Guid, WeChatMsg> _recvedMsg = new Dictionary<Guid, WeChatMsg>();
         /// <summary>
         /// 收到对方的消息
         /// </summary>
-        public Dictionary<long, WeChatMsg> RecvedMsg
+        public Dictionary<Guid, WeChatMsg> RecvedMsg
         {
             get
             {
@@ -297,7 +297,7 @@ namespace WeChat.WPF.Modules.Main.Model
         /// <param name="msg"></param>
         public void ReceivedMsg(WeChatMsg msg)
         {
-            _recvedMsg.Add(msg.Time, msg);
+            _recvedMsg.Add(Guid.NewGuid(), msg);
             if (MsgRecved!=null)
             {
                 MsgRecved(msg);
@@ -316,7 +316,7 @@ namespace WeChat.WPF.Modules.Main.Model
                 WeChatService wcs = new WeChatService();
                 wcs.SendMsg(msg.Msg, msg.From, msg.To, msg.Type);
             }
-            _sentMsg.Add(msg.Time, msg);
+            _sentMsg.Add(Guid.NewGuid(), msg);
             if (MsgSent!=null)
             {
                 MsgSent(msg);
@@ -329,7 +329,7 @@ namespace WeChat.WPF.Modules.Main.Model
         public List<WeChatMsg> GetUnReadMsg()
         {
             List<WeChatMsg> list = null;
-            foreach (KeyValuePair<long,WeChatMsg> p in _recvedMsg)
+            foreach (KeyValuePair<Guid,WeChatMsg> p in _recvedMsg)
             {
                 if (!p.Value.Readed)
                 {
