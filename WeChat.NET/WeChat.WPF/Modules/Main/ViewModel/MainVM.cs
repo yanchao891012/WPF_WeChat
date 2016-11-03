@@ -534,7 +534,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.RightToLeft;
             chatmsg.TbColor = (Brush)new BrushConverter().ConvertFromString("#FF98E165");
-            chatmsg.HorAli = HorizontalAlignment.Right;
             ChatList.Add(chatmsg);
         }
         /// <summary>
@@ -558,7 +557,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.LeftToRight;
             chatmsg.TbColor = Brushes.White;
-            chatmsg.HorAli = HorizontalAlignment.Left;
             ChatList.Add(chatmsg);
         }
         #endregion

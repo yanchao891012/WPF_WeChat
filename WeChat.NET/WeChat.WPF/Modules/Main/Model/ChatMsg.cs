@@ -75,22 +75,5 @@ namespace WeChat.WPF.Modules.Main.Model
                 _tbColor = value;
             }
         }
-
-        private HorizontalAlignment _horAli;
-        /// <summary>
-        /// 横向对齐方式
-        /// </summary>
-        public HorizontalAlignment HorAli
-        {
-            get
-            {
-                return _horAli;
-            }
-
-            set
-            {
-                _horAli = value;
-            }
-        }
     }
 }
