@@ -321,5 +321,78 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
+    <!--发送按钮样式-->
+    <SolidColorBrush x:Key="ButtonNormalBorder" Color="#FF707070"/>
+    <Style x:Key="SendButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="bor" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <TextBlock x:Name="tb" Text="{TemplateBinding Content}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Foreground" TargetName="tb" Value="White"/>
+                            <Setter Property="Background" TargetName="bor" Value="#FF3DCE3D"/>
+                            <Setter Property="BorderBrush" TargetName="bor" Value="#FF3DCE3D"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--ToolTip-->
+    <Style x:Key="ToolTipTextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type TextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border>
+                        <Grid>
+                            <Path StrokeThickness="1" Stroke="Gray" Stretch="Fill">
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathFigure StartPoint="0,0">
+                                            <LineSegment Point="50,0"/>
+                                            <ArcSegment Point="52,2" Size="2,2" SweepDirection="Clockwise"/>
+                                            <LineSegment Point="52,22"/>
+                                            <ArcSegment Point="50,24" Size="2,2" SweepDirection="Clockwise"/>
+                                            <LineSegment Point="45,24"/>
+                                            <LineSegment Point="43,32"/>
+                                            <LineSegment Point="41,24"/>
+                                            <LineSegment Point="0,24"/>
+                                            <ArcSegment Point="-2,22" Size="2,2" SweepDirection="Clockwise"/>
+                                            <LineSegment Point="-2,2"/>
+                                            <ArcSegment Point="0,0" Size="2,2" SweepDirection="Clockwise"/>
+                                        </PathFigure>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                            <TextBlock Text="{TemplateBinding Text}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="0,5"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>        
+    </Style>
+
+
 </ResourceDictionary>

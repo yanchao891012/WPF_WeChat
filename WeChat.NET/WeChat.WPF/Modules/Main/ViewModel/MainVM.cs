@@ -12,17 +12,21 @@ using WeChat.HTTP;
 using WeChat.WPF.Modules.Main.Model;
 using System.Collections.ObjectModel;
 using WeChat.Tools.Helpers;
+using System.Windows.Threading;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
     public class MainVM : ViewModelBase
     {
         WeChatService wcs = new WeChatService();
+        System.Timers.Timer timer = new System.Timers.Timer();
 
         public MainVM()
         {
+            timer.Interval = 2000;
+            timer.Elapsed += Timer_Elapsed;
             Init();
-        }
+        }       
 
         #region 字段属性
         /// <summary>
@@ -201,6 +205,25 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 RaisePropertyChanged("SendMessage");
             }
         }
+
+
+        private Visibility tootip_Visibility = Visibility.Collapsed;
+        /// <summary>
+        /// 是否显示提示
+        /// </summary>
+        public Visibility Tootip_Visibility
+        {
+            get
+            {
+                return tootip_Visibility;
+            }
+
+            set
+            {
+                tootip_Visibility = value;
+                RaisePropertyChanged("Tootip_Visibility");
+            }
+        }
         #endregion
 
         #region 方法
@@ -340,6 +363,16 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             return start_char;
         }
 
+        /// <summary>
+        /// 倒计时隐藏按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Tootip_Visibility = Visibility.Collapsed;
+            timer.Stop();
+        }
         #endregion
 
         #region 聊天事件
@@ -495,6 +528,11 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                             msg.Time = DateTime.Now;
                             _friendUser.SendMsg(msg, false);
                             SendMessage = string.Empty;
+                        }
+                        else
+                        {
+                            Tootip_Visibility = Visibility.Visible;
+                            timer.Start();
                         }
                     }));
             }
