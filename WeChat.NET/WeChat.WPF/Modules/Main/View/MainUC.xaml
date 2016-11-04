@@ -37,7 +37,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--聊天列表-->
-            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_latest}" SelectedItem="{Binding Select_Contact_latest}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0">
+            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_latest}" SelectedItem="{Binding Select_Contact_latest}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemChatStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <mv:EventToCommand Command="{Binding ChatCommand}"/>
