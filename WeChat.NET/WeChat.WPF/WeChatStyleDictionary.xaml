@@ -17,6 +17,20 @@
     <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+    <!--未读消息个数圆形按钮-->
+    <Style x:Key="CirButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Ellipse Fill="Red" Width="17" Height="17"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <!--关闭按钮的样式-->
     <Style x:Key="CloseStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="WhiteSmoke"/>
@@ -140,7 +154,10 @@
                     <Border>
                         <StackPanel x:Name="sp" Orientation="Horizontal" Height="{Binding Converter={StaticResource objectToHeight}}" Background="{Binding Converter={StaticResource objectToColor}}">
                             <TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource NullToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                            <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
+                            <Grid>
+                                <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
+                                <Button Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5" Style="{StaticResource CirButtonStyle}"/>
+                            </Grid>
                             <TextBlock Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
                         </StackPanel>
                     </Border>
