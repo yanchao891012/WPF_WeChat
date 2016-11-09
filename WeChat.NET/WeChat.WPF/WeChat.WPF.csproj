@@ -124,6 +124,7 @@
     <Compile Include="Controls\NotificationAreaIcon.cs" />
     <Compile Include="Controls\ScrollingListBox.cs" />
     <Compile Include="Conver\BoolConvertVisibility.cs" />
+    <Compile Include="Conver\CountConvertVisibility.cs" />
     <Compile Include="Conver\NullConvertVisibility.cs" />
     <Compile Include="Conver\ObjectConvertColor.cs" />
     <Compile Include="Conver\ObjectConvertHeight.cs" />

@@ -26,7 +26,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             timer.Interval = 2000;
             timer.Elapsed += Timer_Elapsed;
             Init();
-        }       
+        }
 
         #region 字段属性
         /// <summary>
@@ -76,7 +76,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                         _friendUser.MsgRecved += new WeChatUser.MsgRecvedEventHandler(_friendUser_MsgRecved);
                         _friendUser.MsgSent += new WeChatUser.MsgSentEventHandler(_friendUser_MsgSent);
                         IEnumerable<KeyValuePair<Guid, WeChatMsg>> dic = _friendUser.RecvedMsg.Concat(_friendUser.SentMsg);
-                        dic = dic.OrderBy(p => p.Key);
+                        //dic = dic.OrderBy(p => p.Key);
                         foreach (KeyValuePair<Guid, WeChatMsg> p in dic)
                         {
                             if (p.Value.From == _friendUser.UserName)
@@ -88,6 +88,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                 ShowSendMsg(p.Value);
                             }
                             p.Value.Readed = true;
+                            _friendUser.UnReadCount = 0;//读了以后，就清除                         
                         }
                     }
                 }
@@ -439,6 +440,25 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                                             if (user.UserName == msg.From && msg.To == _me.UserName)
                                                             {
                                                                 Contact_latest.Remove(user);
+                                                                user.UnReadCount = user.GetUnReadMsg() == null ? 0 : user.GetUnReadMsg().Count;
+                                                                List<WeChatMsg> unReadList = user.GetUnReadMsg();
+                                                                WeChatMsg latestMsg = user.GetLatestMsg();
+                                                                if (unReadList != null)//未读消息
+                                                                {
+                                                                    user.LastTime = unReadList[unReadList.Count - 1].Time.ToShortTimeString();
+                                                                    user.LastMsg = unReadList[unReadList.Count - 1].Msg.ToString();
+                                                                    user.LastMsg = user.LastMsg.Length <= 10 ? user.LastMsg : user.LastMsg.Substring(0, 10) + "……";
+                                                                }
+                                                                else//最新消息
+                                                                {
+                                                                    if (latestMsg != null)
+                                                                    {
+                                                                        user.LastTime = latestMsg.Time.ToShortTimeString();
+                                                                        user.LastMsg = latestMsg.Msg.ToString();
+                                                                        user.LastMsg = user.LastMsg.Length <= 10 ? user.LastMsg : user.LastMsg.Substring(0, 10) + "……";
+                                                                    }
+                                                                }
+
                                                                 Contact_latest.Insert(0, user);
                                                                 exist_latest_contact = true;
                                                                 user.ReceivedMsg(msg);

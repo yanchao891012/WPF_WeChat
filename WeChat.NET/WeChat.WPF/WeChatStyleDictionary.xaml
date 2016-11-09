@@ -7,6 +7,7 @@
     <conver:ObjectConvertColor x:Key="objectToColor"/>
     <conver:ObjectConvertHeight x:Key="objectToHeight"/>
     <conver:BoolConvertVisibility x:Key="boolToVisibility"/>
+    <conver:CountConvertVisibility x:Key="countToVisibility"/>
 
     <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
@@ -180,9 +181,17 @@
                             <!--<TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource NullToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>-->
                             <Grid>
                                 <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
-                                <Button Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5" Style="{StaticResource CirButtonStyle}"/>
+                                <Button Foreground="White" Visibility="{Binding UnReadCount,Converter={StaticResource countToVisibility}}" Content="{Binding UnReadCount}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5" Style="{StaticResource CirButtonStyle}"/>
                             </Grid>
-                            <TextBlock Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
+                            <Grid Width="176">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
+                                <TextBlock Grid.Row="0" Text="{Binding LastTime}" FontSize="15" HorizontalAlignment="Right" Margin="0,10,5,0"/>
+                                <TextBlock Grid.Row="1" Text="{Binding LastMsg}" FontSize="12" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>

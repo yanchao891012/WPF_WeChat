@@ -1,13 +1,15 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Media;
 using WeChat.HTTP;
 
 namespace WeChat.WPF.Modules.Main.Model
 {
-    public class WeChatUser
+    public class WeChatUser:ViewModelBase
     {
         private string _userName;
         private string _nickName;
@@ -383,6 +385,60 @@ namespace WeChat.WPF.Modules.Main.Model
             set
             {
                 _startChar = value;
+            }
+        }
+
+        private int _unReadCount = 0;
+        /// <summary>
+        /// 未读条数
+        /// </summary>
+        public int UnReadCount
+        {
+            get
+            {
+                return _unReadCount;
+            }
+
+            set
+            {
+                _unReadCount = value;
+                RaisePropertyChanged("UnReadCount");
+            }
+        }
+
+        private string _lastTime;
+        /// <summary>
+        /// 最后消息时间
+        /// </summary>
+        public string LastTime
+        {
+            get
+            {
+                return _lastTime;
+            }
+
+            set
+            {
+                _lastTime = value;
+                RaisePropertyChanged("LastTime");
+            }
+        }
+
+        private string _lastMsg;
+        /// <summary>
+        /// 最后的消息
+        /// </summary>
+        public string LastMsg
+        {
+            get
+            {
+                return _lastMsg;
+            }
+
+            set
+            {
+                _lastMsg = value;
+                RaisePropertyChanged("LastMsg");
             }
         }
     }
