@@ -8,13 +8,16 @@ using System.Windows.Data;
 
 namespace WeChat.WPF.Conver
 {
-    class NullConvertVisibility : IValueConverter
+    class ParameterConvertVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value !=null && !string.IsNullOrEmpty(value.ToString()))
             {
-                return Visibility.Visible;
+                if (value.ToString()==parameter.ToString())
+                {
+                    return Visibility.Visible;
+                }
             }
             return Visibility.Collapsed;
         }

@@ -3,11 +3,14 @@
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:local="clr-namespace:WeChat.WPF"
                     xmlns:conver="clr-namespace:WeChat.WPF.Conver">
-    <conver:NullConvertVisibility x:Key="NullToVisibility"/>
+    <conver:ModelConvertVisibility x:Key="modelToVisibility"/>
     <conver:ObjectConvertColor x:Key="objectToColor"/>
     <conver:ObjectConvertHeight x:Key="objectToHeight"/>
     <conver:BoolConvertVisibility x:Key="boolToVisibility"/>
     <conver:CountConvertVisibility x:Key="countToVisibility"/>
+    <conver:ParameterConvertVisibility x:Key="parameterToVisibility"/>
+    <conver:EmptyConvertVisibility x:Key="epmtyToVisibility"/>
+    <conver:NullConvertVisibility x:Key="nullToVisibility"/>
 
     <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
@@ -154,7 +157,7 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border>
                         <StackPanel x:Name="sp" Orientation="Horizontal" Height="{Binding Converter={StaticResource objectToHeight}}" Background="{Binding Converter={StaticResource objectToColor}}">
-                            <TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource NullToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource modelToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                             <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
                             <TextBlock Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
                         </StackPanel>
@@ -178,7 +181,6 @@
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border>
                         <StackPanel x:Name="sp" Orientation="Horizontal" Height="{Binding Converter={StaticResource objectToHeight}}" Background="{Binding Converter={StaticResource objectToColor}}">
-                            <!--<TextBlock Text="{Binding }" FontWeight="Black" Visibility="{Binding Converter={StaticResource NullToVisibility}}" FontSize="15" Margin="10,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>-->
                             <Grid>
                                 <Image Source="{Binding Icon}" Width="40" Height="40" Margin="10"/>
                                 <Button Foreground="White" Visibility="{Binding UnReadCount,Converter={StaticResource countToVisibility}}" Content="{Binding UnReadCount}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5" Style="{StaticResource CirButtonStyle}"/>
@@ -443,5 +445,30 @@
         </Setter>
     </Style>
 
+    <!--用户信息页面的按钮样式-->
+    <Style x:Key="FriSendButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+        <Setter Property="Background" Value="#FF3DCE3D"/>
+        <Setter Property="BorderBrush" Value="#FF3DCE3D"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Chrome" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}"  SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="#ADADAD"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

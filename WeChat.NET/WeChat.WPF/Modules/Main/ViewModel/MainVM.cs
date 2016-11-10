@@ -95,6 +95,25 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 RaisePropertyChanged("FriendUser");
             }
         }
+
+        private WeChatUser _friendInfo;
+        /// <summary>
+        /// 好友信息
+        /// </summary>
+        public WeChatUser FriendInfo
+        {
+            get
+            {
+                return _friendInfo;
+            }
+
+            set
+            {
+                _friendInfo = value;
+                RaisePropertyChanged("FriendInfo");
+            }
+        }
+
         /// <summary>
         /// 所有好友列表
         /// </summary>
@@ -154,6 +173,24 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             }
         }
 
+        private object _select_Contact_all = new object();
+        /// <summary>
+        /// 通讯录选中
+        /// </summary>
+        public object Select_Contact_all
+        {
+            get
+            {
+                return _select_Contact_all;
+            }
+
+            set
+            {
+                _select_Contact_all = value;
+                RaisePropertyChanged("Select_Contact_all");
+            }
+        }
+
         private string _userName = string.Empty;
         /// <summary>
         /// 用于在顶部显示用户名
@@ -207,7 +244,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             }
         }
 
-
         private Visibility tootip_Visibility = Visibility.Collapsed;
         /// <summary>
         /// 是否显示提示
@@ -223,6 +259,24 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 tootip_Visibility = value;
                 RaisePropertyChanged("Tootip_Visibility");
+            }
+        }
+
+        private bool _isChecked = true;
+        /// <summary>
+        /// 是否被选中
+        /// </summary>
+        public bool IsChecked
+        {
+            get
+            {
+                return _isChecked;
+            }
+
+            set
+            {
+                _isChecked = value;
+                RaisePropertyChanged("IsChecked");
             }
         }
         #endregion
@@ -523,6 +577,41 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                             ChatList.Clear();
                             FriendUser = Select_Contact_latest as WeChatUser;
                         }
+                    }));
+            }
+        }
+
+        private RelayCommand _friendCommand;
+        /// <summary>
+        /// 通讯录选中事件
+        /// </summary>
+        public RelayCommand FirendCommand
+        {
+            get
+            {
+                return _friendCommand ?? (_friendCommand = new RelayCommand(() =>
+                    {
+                        if (Select_Contact_all is WeChatUser)
+                        {
+                            FriendInfo = Select_Contact_all as WeChatUser;
+                        }
+                    }));
+            }
+        }
+
+        private RelayCommand _friendSendComamnd;
+        /// <summary>
+        /// 用户信息页面的发送消息按钮
+        /// </summary>
+        public RelayCommand FriendSendComamnd
+        {
+            get
+            {
+                return _friendSendComamnd ?? (_friendSendComamnd = new RelayCommand(() =>
+                    {
+                        Contact_latest.Remove(Select_Contact_all);
+                        Contact_latest.Insert(0, Select_Contact_all);
+                        IsChecked = true;
                     }));
             }
         }

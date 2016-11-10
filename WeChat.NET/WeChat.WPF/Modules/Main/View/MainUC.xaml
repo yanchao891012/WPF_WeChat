@@ -27,7 +27,7 @@
         <Grid Grid.Column="0" Background="#FF3E3E40" MouseDown="Grid_MouseDown" MouseLeftButtonDown="Grid_MouseLeftButtonDown">
             <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0">
                 <Image Height="30" Width="30" Source="{Binding Me.Icon}"/>
-                <RadioButton Height="20" Width="20" x:Name="rb_chat" IsChecked="True" GroupName="rb" Style="{StaticResource ChatStyle}" Margin="0,10,0,10"/>  
+                <RadioButton Height="20" Width="20" x:Name="rb_chat" IsChecked="{Binding IsChecked}" GroupName="rb" Style="{StaticResource ChatStyle}" Margin="0,10,0,10"/>  
                 <RadioButton Height="20" Width="20" x:Name="rb_friend" GroupName="rb" Style="{StaticResource FriendStyle}"/>
             </StackPanel>
         </Grid>
@@ -45,7 +45,13 @@
                 </i:Interaction.Triggers>
             </ListBox>
             <!--通讯录-->
-            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_friend,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_all}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0"/>
+            <ListBox Grid.Row="1" Visibility="{Binding ElementName=rb_friend,Path=IsChecked,Converter={StaticResource boolToVisibility}}" ItemsSource="{Binding Contact_all}" SelectedItem="{Binding Select_Contact_all}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{StaticResource ListBoxItemFriendStyle}" Background="#FFEAEAEA" BorderThickness="0" Margin="0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <mv:EventToCommand Command="{Binding FirendCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
         </Grid>
         <Grid Grid.Column="2" Background="WhiteSmoke">
             <Grid.RowDefinitions>
@@ -71,10 +77,10 @@
                     </controls:NotificationAreaIcon>
                 </StackPanel>
             </Grid>
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}">
                 <controls:ScrollingListBox ItemsSource="{Binding ChatList}" Background="WhiteSmoke"  Style="{StaticResource ChatListBoxStyle}"/>
             </Grid>
-            <Grid Grid.Row="2" Background="#FFF9F9F9">
+            <Grid Grid.Row="2" Background="#FFF9F9F9" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="*"/>
@@ -83,6 +89,35 @@
                 <TextBox Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0" Text="{Binding SendMessage}" TextWrapping="Wrap"/>
                 <TextBox Grid.Row="1" Visibility="{Binding Tootip_Visibility}" Text="不能发送空白信息" Background="White" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15,0" Style="{StaticResource ToolTipTextBoxStyle}" FontSize="13" Height="35" Width="110"/>
                 <Button Grid.Row="2" Command="{Binding SendCommand}" Content="发送(S)" Width="68" Height="26" FontSize="13" BorderBrush="Gray" Background="WhiteSmoke" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,15,0" Style="{StaticResource SendButtonStyle}"/>
+            </Grid>
+            <Grid Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding ElementName=rb_friend,Path=IsChecked,Converter={StaticResource boolToVisibility}}" Margin="0,50,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Image Source="{Binding FriendInfo.Icon}" Grid.Row="0" Height="124" Width="124" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding FriendInfo.NickName}" FontSize="30" Foreground="Black" FontWeight="Bold"/>
+                    <Image Visibility="{Binding FriendInfo.Sex,Converter={StaticResource parameterToVisibility},ConverterParameter=2}" Source="/Image/female.png"/>
+                    <Image Visibility="{Binding FriendInfo.Sex,Converter={StaticResource parameterToVisibility},ConverterParameter=1}" Source="/Image/male.png"/>
+                </StackPanel>
+                <TextBlock Text="{Binding FriendInfo.Signature}" Foreground="#FF919191" Grid.Row="2" HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding FriendInfo.RemarkName,Converter={StaticResource epmtyToVisibility}}" Margin="10" Grid.Row="3" HorizontalAlignment="Center">
+                    <TextBlock Text="备  注" Margin="0,0,10,0" FontSize="15"/>
+                    <TextBlock Text="{Binding FriendInfo.RemarkName}" FontSize="15"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding FriendInfo.Province,Converter={StaticResource epmtyToVisibility}}" Margin="10" Grid.Row="4" HorizontalAlignment="Center">
+                    <TextBlock Text="地区" Margin="0,0,10,0" FontSize="15"/>
+                    <TextBlock Text="{Binding FriendInfo.Province}" Margin="0,0,2,0" FontSize="15"/>
+                    <TextBlock Text="{Binding FriendInfo.City}" FontSize="15"/>
+                </StackPanel>
+                <Button Content="发消息" Width="166" Height="37" Grid.Row="5" Command="{Binding FriendSendComamnd}" Margin="0,50,0,0" Style="{StaticResource FriSendButtonStyle}"/>
+                <Grid Grid.Row="0" Grid.RowSpan="7" Background="WhiteSmoke" Visibility="{Binding FriendInfo,Converter={StaticResource nullToVisibility}}"/>
             </Grid>
         </Grid>
     </Grid>

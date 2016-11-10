@@ -125,9 +125,12 @@
     <Compile Include="Controls\ScrollingListBox.cs" />
     <Compile Include="Conver\BoolConvertVisibility.cs" />
     <Compile Include="Conver\CountConvertVisibility.cs" />
+    <Compile Include="Conver\EmptyConvertVisibility.cs" />
+    <Compile Include="Conver\ModelConvertVisibility.cs" />
     <Compile Include="Conver\NullConvertVisibility.cs" />
     <Compile Include="Conver\ObjectConvertColor.cs" />
     <Compile Include="Conver\ObjectConvertHeight.cs" />
+    <Compile Include="Conver\ParameterConvertVisibility.cs" />
     <Compile Include="Modules\ComManage\WeChatViewModelLocator.cs" />
     <Compile Include="Modules\Login\ViewModel\LoginVM.cs" />
     <Compile Include="Modules\Login\View\LoginInfoUC.xaml.cs">
@@ -190,6 +193,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Wechat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\female.png" />
+    <Resource Include="Image\male.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\huadong.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
