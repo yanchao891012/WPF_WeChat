@@ -31,6 +31,7 @@ namespace WeChat.WPF.Modules.Login.View
                 this.Dispatcher.Invoke((Action)(() =>
                 {
                     AddUC(new LoginInfoUC());
+                    img.Visibility = Visibility.Collapsed;
                 }));
             }
             ));
@@ -43,6 +44,7 @@ namespace WeChat.WPF.Modules.Login.View
                  this.Dispatcher.Invoke((Action)(() =>
                  {
                      AddUC(new QRCodeUC());
+                     img.Visibility = Visibility.Visible;
                  }));
              }));
             //卸载二维码信息广播

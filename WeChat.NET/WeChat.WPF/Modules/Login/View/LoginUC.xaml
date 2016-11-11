@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WeChat.WPF.Modules.Login.View"
         mc:Ignorable="d"
         Title="LoginUC" Height="400" Width="600" Background="#00FFFFFF" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen" Icon="/Image/Wechat.ico">
+    
     <Grid Background="WhiteSmoke" HorizontalAlignment="Left" Height="400" Width="280">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -20,23 +21,24 @@
             <TextBlock Text="微信" Grid.Column="0" FontSize="15" Margin="15"/>
             <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Height="45" Width="45" Style="{StaticResource CloseStyle}" Click="Button_Click"/>
         </Grid>
-        <Grid x:Name="grid_content" Grid.Row="1">
+        <Grid x:Name="grid_content" Background="WhiteSmoke" Grid.Row="1">
             <Grid.Triggers>
                 <EventTrigger RoutedEvent="Grid.MouseEnter">
                     <EventTrigger.Actions>
-                        <BeginStoryboard HandoffBehavior="Compose">
+                        <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" BeginTime="0" Duration="0:0:0.7" From="0" To="300" Storyboard.TargetName="img"/>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0" Duration="0:0:0.5" From="0" To="1" Storyboard.TargetName="img"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" BeginTime="0" Duration="0:0:0.5" From="0" To="300" Storyboard.TargetName="img"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" BeginTime="0:0:0.5" Duration="0:0:0.3" From="300" To="270" Storyboard.TargetName="img"/>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0" Duration="0:0:0.5" From="0" To="1" Storyboard.TargetName="img"/>                                
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger.Actions>
                 </EventTrigger>
                 <EventTrigger RoutedEvent="Grid.MouseLeave">
                     <EventTrigger.Actions>
-                        <BeginStoryboard HandoffBehavior="Compose">
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" BeginTime="0" Duration="0:0:0.7" From="300" To="0" Storyboard.TargetName="img"/>
+                        <BeginStoryboard HandoffBehavior="SnapshotAndReplace">
+                            <Storyboard>                                
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" BeginTime="0" Duration="0:0:0.5" From="270" To="0" Storyboard.TargetName="img"/>
                                 <DoubleAnimation Storyboard.TargetProperty="Opacity" BeginTime="0" Duration="0:0:0.5" From="1" To="0" Storyboard.TargetName="img"/>
                             </Storyboard>
                         </BeginStoryboard>
@@ -44,7 +46,7 @@
                 </EventTrigger>
             </Grid.Triggers>
         </Grid>
-        <Image x:Name="img" Source="/Image/huadong.png" Height="0" Width="0" Opacity="0" Grid.Row="0" Grid.RowSpan="2">
+        <Image x:Name="img" Source="/Image/huadong.png" Visibility="Visible" Opacity="0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
