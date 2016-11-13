@@ -64,7 +64,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding UserName}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="15" Grid.ColumnSpan="2"/>
+                <TextBlock Text="{Binding UserName}" Visibility="{Binding ElementName=rb_chat,Path=IsChecked,Converter={StaticResource boolToVisibility}}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="15" Grid.ColumnSpan="2"/>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Button x:Name="btn_min" Height="35" Width="28" Style="{StaticResource MinimizeStyle}" Click="btn_min_Click"/>
                     <Button x:Name="btn_normal" Height="35" Width="28" Visibility="Collapsed" Style="{StaticResource NormizeStyle}" Click="btn_normal_Click"/>
