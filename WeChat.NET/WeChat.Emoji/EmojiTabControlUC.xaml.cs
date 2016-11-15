@@ -23,8 +23,13 @@ namespace WeChat.Emoji
         public EmojiTabControlUC()
         {
             InitializeComponent();
+            if (EmojiList.Count>0)
+            {
+                return;
+            }
             AnalysisXML anlyxml = new AnalysisXML();
-            EmojiList = new ObservableCollection<emojiEntity>(anlyxml.EmojiList);
+            anlyxml.AnayXML();
+            EmojiList = new ObservableCollection<emojiEntity>(anlyxml.EmojiList);            
         }
 
         private static ObservableCollection<emojiEntity> emojiList = new ObservableCollection<emojiEntity>();

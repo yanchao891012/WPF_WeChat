@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Windows.Media.Imaging;
 using System.Xml;
 
 namespace WeChat.Emoji
@@ -32,7 +33,9 @@ namespace WeChat.Emoji
         public void AnayXML()
         {
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(Path.Combine(Environment.CurrentDirectory, @"Emoji.xml"));
+            Assembly _assembly = Assembly.GetExecutingAssembly();
+            Stream _stream = _assembly.GetManifestResourceStream("WeChat.Emoji.Emoji.xml");
+            xmlDoc.Load(_stream);
             XmlNode root = xmlDoc.SelectSingleNode("array");
             XmlNodeList nodeList = root.ChildNodes;
             foreach (XmlNode xn in nodeList)
@@ -53,7 +56,7 @@ namespace WeChat.Emoji
                         {
                             if (lastNode.Name == "e")
                             {
-                                entity.EmojiCode.Add(lastNode.InnerText, GetEmojiPath(lastNode.InnerText));
+                                entity.EmojiCode.Add(lastNode.InnerText, GetEmoji(lastNode.InnerText));
                             }
                         }
                     }
@@ -62,13 +65,18 @@ namespace WeChat.Emoji
             }
         }
         /// <summary>
-        /// 返回Emoji路径
+        /// 返回Emoji
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private string GetEmojiPath(string name)
+        private BitmapImage GetEmoji(string name)
         {
-            return "../image/" + "emoji_" + name + ".png";
+            BitmapImage bitmap = new BitmapImage();
+            string imgUrl = "/WeChat.Emoji;component/Image/" + "emoji_" + name + ".png";
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(imgUrl, UriKind.Relative);
+            bitmap.EndInit();
+            return bitmap;
         }
     }
 }

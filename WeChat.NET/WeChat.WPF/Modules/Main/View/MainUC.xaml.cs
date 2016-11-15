@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WeChat.Emoji;
 
 namespace WeChat.WPF.Modules.Main.View
 {
@@ -145,5 +146,13 @@ namespace WeChat.WPF.Modules.Main.View
         }
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            EmojiTabControlUC uc = new EmojiTabControlUC();
+            Window win = new Window();
+            win.Content = uc;
+            win.Show();
+        }
     }
 }
