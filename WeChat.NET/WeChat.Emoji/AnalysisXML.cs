@@ -34,10 +34,11 @@ namespace WeChat.Emoji
         {
             XmlDocument xmlDoc = new XmlDocument();
             Assembly _assembly = Assembly.GetExecutingAssembly();
-            Stream _stream = _assembly.GetManifestResourceStream("WeChat.Emoji.Emoji.xml");
+            Stream _stream = _assembly.GetManifestResourceStream("WeChat.Emoji.Emoji.xml");//文件需为嵌入的资源
             xmlDoc.Load(_stream);
             XmlNode root = xmlDoc.SelectSingleNode("array");
             XmlNodeList nodeList = root.ChildNodes;
+            //循环列表，获得相应的内容
             foreach (XmlNode xn in nodeList)
             {
                 XmlElement xe = (XmlElement)xn;
