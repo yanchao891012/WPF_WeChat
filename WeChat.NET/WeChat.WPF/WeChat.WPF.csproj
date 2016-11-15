@@ -179,6 +179,10 @@
     <Folder Include="Modules\Login\Model\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WeChat.Emoji\WeChat.Emoji.csproj">
+      <Project>{b0369077-30b0-4f55-aee9-dbdf61a7e6c3}</Project>
+      <Name>WeChat.Emoji</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WeChat.HTTP\WeChat.HTTP.csproj">
       <Project>{5f956b4a-d064-4668-a181-d02c37fc639e}</Project>
       <Name>WeChat.HTTP</Name>
