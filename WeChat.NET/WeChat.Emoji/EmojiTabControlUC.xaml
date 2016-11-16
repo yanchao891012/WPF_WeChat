@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WeChat.Emoji"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Name="uc">
     <UserControl.Resources>
         <SolidColorBrush x:Key="TabControlNormalBorderBrush" Color="#8C8E94"/>
         <SolidColorBrush x:Key="TabItemHotBorderBrush" Color="#3C7FB1"/>
@@ -181,15 +181,41 @@
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Grid>
+                        <Grid x:Name="gr" Background="White">
                             <Image Source="{Binding Path=Value}" Width="24" Height="24" Stretch="Uniform"/>
                         </Grid>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="LightGray" TargetName="gr"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
-    <Grid>
+    <Border BorderThickness="1" BorderBrush="Gray">
         <TabControl SelectedIndex="0" ItemsSource="{Binding EmojiList,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}" Style="{StaticResource TabControlStyle}" ItemContainerStyle="{StaticResource TabItemStyle}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
@@ -198,9 +224,9 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="TabItem">
-                    <ListBox ItemsSource="{Binding EmojiCode}" Style="{StaticResource WrapListBox}"/>
+                    <ListBox ItemsSource="{Binding EmojiCode}" SelectionChanged="ListBox_SelectionChanged" SelectedItem="{Binding SelectEmoji,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WrapListBox}" ItemContainerStyle="{StaticResource ListBoxItemStyle}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>    
-    </Grid>
+    </Border>
 </UserControl>

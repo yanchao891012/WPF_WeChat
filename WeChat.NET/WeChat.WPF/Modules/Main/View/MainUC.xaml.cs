@@ -146,13 +146,5 @@ namespace WeChat.WPF.Modules.Main.View
         }
 
         #endregion
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            EmojiTabControlUC uc = new EmojiTabControlUC();
-            Window win = new Window();
-            win.Content = uc;
-            win.Show();
-        }
     }
 }

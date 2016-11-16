@@ -13,6 +13,7 @@ using WeChat.WPF.Modules.Main.Model;
 using System.Collections.ObjectModel;
 using WeChat.Tools.Helpers;
 using System.Windows.Threading;
+using WeChat.Emoji;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
@@ -277,6 +278,42 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 _isChecked = value;
                 RaisePropertyChanged("IsChecked");
+            }
+        }
+
+        private Visibility emoji_Visibility = Visibility.Collapsed;
+        /// <summary>
+        /// Emoji显隐
+        /// </summary>
+        public Visibility Emoji_Visibility
+        {
+            get
+            {
+                return emoji_Visibility;
+            }
+
+            set
+            {
+                emoji_Visibility = value;
+                RaisePropertyChanged("Emoji_Visibility");
+            }
+        }
+
+        private bool emoji_Popup = false;
+        /// <summary>
+        /// Popup是否弹出
+        /// </summary>
+        public bool Emoji_Popup
+        {
+            get
+            {
+                return emoji_Popup;
+            }
+
+            set
+            {
+                emoji_Popup = value;
+                RaisePropertyChanged("Emoji_Popup");
             }
         }
         #endregion
@@ -705,6 +742,23 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             chatmsg.FlowDir = FlowDirection.LeftToRight;
             chatmsg.TbColor = Brushes.White;
             ChatList.Add(chatmsg);
+        }
+        #endregion
+
+        #region 插件部分按钮事件
+        private RelayCommand<EmojiTabControlUC> _emojiCommand;
+        /// <summary>
+        /// Emoji按钮事件
+        /// </summary>
+        public RelayCommand<EmojiTabControlUC> EmojiCommand
+        {
+            get
+            {
+                return _emojiCommand ?? (_emojiCommand = new RelayCommand<EmojiTabControlUC>(p =>
+                    {
+                        Emoji_Popup = true;
+                    }));
+            }
         }
         #endregion
     }

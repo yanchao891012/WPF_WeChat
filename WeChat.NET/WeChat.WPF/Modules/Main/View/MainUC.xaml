@@ -9,6 +9,7 @@
         xmlns:controls="clr-namespace:WeChat.WPF.Controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mv="http://www.galasoft.ch/mvvmlight"
+        xmlns:Emoji="clr-namespace:WeChat.Emoji;assembly=WeChat.Emoji"
         mc:Ignorable="d"
         Title="MainUC" Height="612" Width="852" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={x:Static ComManage:WeChatViewModelLocator.Instance},Path=MainViewModel}"
@@ -87,7 +88,7 @@
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0">
-                    <RadioButton Grid.Row="0" Style="{StaticResource EmojiStyle}" Click="Button_Click"/>
+                    <RadioButton x:Name="RB_Emoji" Grid.Row="0" Command="{Binding EmojiCommand}" CommandParameter="{Binding ElementName=EmojiTabControlUC}" Style="{StaticResource EmojiStyle}"/>
                 </StackPanel>
                 <TextBox Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0" Text="{Binding SendMessage}" TextWrapping="Wrap"/>
                 <TextBox Grid.Row="1" Visibility="{Binding Tootip_Visibility}" Text="不能发送空白信息" Background="White" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15,0" Style="{StaticResource ToolTipTextBoxStyle}" FontSize="13" Height="35" Width="110"/>
@@ -123,5 +124,8 @@
                 <Grid Grid.Row="0" Grid.RowSpan="7" Background="WhiteSmoke" Visibility="{Binding FriendInfo,Converter={StaticResource nullToVisibility}}"/>
             </Grid>
         </Grid>
+        <Popup PopupAnimation="Fade" PlacementTarget="{Binding ElementName=RB_Emoji}" Placement="Top" AllowsTransparency="True" StaysOpen="False" IsOpen="{Binding Emoji_Popup}">
+            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250"/>
+        </Popup>
     </Grid>
 </Window>

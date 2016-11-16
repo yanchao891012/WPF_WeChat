@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -32,7 +33,25 @@ namespace WeChat.Emoji
             EmojiList = new ObservableCollection<emojiEntity>(anlyxml.EmojiList);            
         }
 
+        private KeyValuePair<string, BitmapImage> selectEmoji = new KeyValuePair<string, BitmapImage>();
+        /// <summary>
+        /// 选中项
+        /// </summary>
+        public KeyValuePair<string, BitmapImage> SelectEmoji
+        {
+            get
+            {
+                return selectEmoji;
+            }
+
+            set
+            {
+                selectEmoji = value;
+            }
+        }
+
         private static ObservableCollection<emojiEntity> emojiList = new ObservableCollection<emojiEntity>();
+
         /// <summary>
         /// emoji集合
         /// </summary>
@@ -47,6 +66,16 @@ namespace WeChat.Emoji
             {
                 emojiList = value;
             }
+        }
+        /// <summary>
+        /// 点选事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show(e.Source.GetType().Name+ e.OriginalSource.GetType().Name + SelectEmoji.Key);
+            e.Handled = true;
         }
     }
 }
