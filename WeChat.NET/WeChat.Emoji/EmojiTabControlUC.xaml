@@ -224,7 +224,7 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="TabItem">
-                    <ListBox ItemsSource="{Binding EmojiCode}" SelectionChanged="ListBox_SelectionChanged" SelectedItem="{Binding SelectEmoji,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl},UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WrapListBox}" ItemContainerStyle="{StaticResource ListBoxItemStyle}"/>
+                    <ListBox ItemsSource="{Binding EmojiCode}" SelectionChanged="ListBox_SelectionChanged" Style="{StaticResource WrapListBox}" ItemContainerStyle="{StaticResource ListBoxItemStyle}"/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>    

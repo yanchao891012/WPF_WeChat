@@ -746,17 +746,33 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         #endregion
 
         #region 插件部分按钮事件
-        private RelayCommand<EmojiTabControlUC> _emojiCommand;
+        private RelayCommand _emojiCommand;
         /// <summary>
         /// Emoji按钮事件
         /// </summary>
-        public RelayCommand<EmojiTabControlUC> EmojiCommand
+        public RelayCommand EmojiCommand
         {
             get
             {
-                return _emojiCommand ?? (_emojiCommand = new RelayCommand<EmojiTabControlUC>(p =>
+                return _emojiCommand ?? (_emojiCommand = new RelayCommand(() =>
                     {
                         Emoji_Popup = true;
+                    }));
+            }
+        }
+
+        private RelayCommand<EmojiTabControlUC> _popupCloseCommand;
+        /// <summary>
+        /// Popup关闭事件
+        /// </summary>
+        public RelayCommand<EmojiTabControlUC> PopupCloseCommand
+        {
+            get
+            {
+                return _popupCloseCommand ?? (_popupCloseCommand = new RelayCommand<EmojiTabControlUC>(p =>
+                    {
+                        SendMessage += p.SelectEmoji.Key;
+                        Emoji_Popup = false;
                     }));
             }
         }

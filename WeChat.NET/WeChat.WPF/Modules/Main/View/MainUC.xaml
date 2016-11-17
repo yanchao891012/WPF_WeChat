@@ -88,7 +88,7 @@
                     <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0">
-                    <RadioButton x:Name="RB_Emoji" Grid.Row="0" Command="{Binding EmojiCommand}" CommandParameter="{Binding ElementName=EmojiTabControlUC}" Style="{StaticResource EmojiStyle}"/>
+                    <RadioButton x:Name="RB_Emoji" Grid.Row="0" Command="{Binding EmojiCommand}" Style="{StaticResource EmojiStyle}"/>
                 </StackPanel>
                 <TextBox Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0" Text="{Binding SendMessage}" TextWrapping="Wrap"/>
                 <TextBox Grid.Row="1" Visibility="{Binding Tootip_Visibility}" Text="不能发送空白信息" Background="White" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15,0" Style="{StaticResource ToolTipTextBoxStyle}" FontSize="13" Height="35" Width="110"/>
@@ -124,8 +124,14 @@
                 <Grid Grid.Row="0" Grid.RowSpan="7" Background="WhiteSmoke" Visibility="{Binding FriendInfo,Converter={StaticResource nullToVisibility}}"/>
             </Grid>
         </Grid>
-        <Popup PopupAnimation="Fade" PlacementTarget="{Binding ElementName=RB_Emoji}" Placement="Top" AllowsTransparency="True" StaysOpen="False" IsOpen="{Binding Emoji_Popup}">
-            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250"/>
+        <Popup x:Name="pop" PopupAnimation="Fade" PlacementTarget="{Binding ElementName=RB_Emoji}" Placement="Top" HorizontalOffset="-100" AllowsTransparency="True" StaysOpen="False" IsOpen="{Binding Emoji_Popup}">
+            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Close">
+                        <mv:EventToCommand Command="{Binding PopupCloseCommand}" CommandParameter="{Binding ElementName=EmojiTabControlUC}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Emoji:EmojiTabControlUC>
         </Popup>
     </Grid>
 </Window>

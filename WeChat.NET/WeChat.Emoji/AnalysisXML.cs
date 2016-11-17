@@ -57,7 +57,7 @@ namespace WeChat.Emoji
                         {
                             if (lastNode.Name == "e")
                             {
-                                entity.EmojiCode.Add(lastNode.InnerText, GetEmoji(lastNode.InnerText));
+                                entity.EmojiCode.Add(GetEmojiStr(lastNode.InnerText), GetEmojiImage(lastNode.InnerText));
                             }
                         }
                     }
@@ -66,11 +66,20 @@ namespace WeChat.Emoji
             }
         }
         /// <summary>
-        /// 返回Emoji
+        /// 返回Emoji字符串
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private BitmapImage GetEmoji(string name)
+        private string GetEmojiStr(string name)
+        {
+            return "[e]" + name + "[/e]";
+        }
+        /// <summary>
+        /// 返回Emoji图像
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private BitmapImage GetEmojiImage(string name)
         {
             BitmapImage bitmap = new BitmapImage();
             string imgUrl = "/WeChat.Emoji;component/Image/" + "emoji_" + name + ".png";

@@ -21,6 +21,7 @@ namespace WeChat.Emoji
     /// </summary>
     public partial class EmojiTabControlUC : UserControl
     {
+        public event EventHandler Close;
         public EmojiTabControlUC()
         {
             InitializeComponent();
@@ -74,8 +75,17 @@ namespace WeChat.Emoji
         /// <param name="e"></param>
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show(e.Source.GetType().Name+ e.OriginalSource.GetType().Name + SelectEmoji.Key);
-            e.Handled = true;
+            ListBox lb = sender as ListBox;
+            if (lb.SelectedItem != null)
+            {
+                SelectEmoji = (KeyValuePair<string, BitmapImage>)lb.SelectedItem;
+                if (Close != null)
+                {
+                    Close(this, null);
+                }
+            }
+            else
+                return;
         }
     }
 }

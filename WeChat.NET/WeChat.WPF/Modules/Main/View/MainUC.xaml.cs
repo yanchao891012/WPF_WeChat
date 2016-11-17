@@ -25,7 +25,7 @@ namespace WeChat.WPF.Modules.Main.View
         //Rect rcnormal;
         public MainUC()
         {
-            InitializeComponent();           
+            InitializeComponent();  
         }
         
         /// <summary>
