@@ -23,6 +23,7 @@
             </Setter>
         </Style>
         <Style x:Key="TabItemStyle" TargetType="{x:Type TabItem}">
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="Background" Value="White"/>
