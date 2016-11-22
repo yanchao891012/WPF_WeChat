@@ -14,7 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DLL", "DLL", "{D6F064E2-F1B
 		DLL\GalaSoft.MvvmLight.Extras.WPF4.dll = DLL\GalaSoft.MvvmLight.Extras.WPF4.dll
 		DLL\GalaSoft.MvvmLight.WPF4.dll = DLL\GalaSoft.MvvmLight.WPF4.dll
 		DLL\Newtonsoft.Json.dll = DLL\Newtonsoft.Json.dll
-		C:\Users\dell\Desktop\Extended WPF Toolkit Binaries\Xceed.Wpf.Toolkit.dll = C:\Users\dell\Desktop\Extended WPF Toolkit Binaries\Xceed.Wpf.Toolkit.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChat.Emoji", "WeChat.Emoji\WeChat.Emoji.csproj", "{B0369077-30B0-4F55-AEE9-DBDF61A7E6C3}"

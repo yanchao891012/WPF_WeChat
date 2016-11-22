@@ -15,6 +15,7 @@ using WeChat.Tools.Helpers;
 using System.Windows.Threading;
 using WeChat.Emoji;
 using System.Windows.Documents;
+using System.Drawing;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
@@ -246,11 +247,11 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             }
         }
 
-        private string _showSendMessage;
+        private FlowDocument _showSendMessage=new FlowDocument();
         /// <summary>
         /// 发送框显示的发送内容
         /// </summary>
-        public string ShowSendMessage
+        public FlowDocument ShowSendMessage
         {
             get
             {
@@ -484,6 +485,47 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             Tootip_Visibility = Visibility.Collapsed;
             timer.Stop();
         }
+        /// <summary>
+        /// 获取Emoji名
+        /// </summary>
+        /// <param name="str">相对路径的值</param>
+        /// <returns></returns>
+        private string GetEmojiName(string str)
+        {
+            string newStr = str.Replace("pack://application:,,,/WeChat.Emoji;component/Image/emoji_", "").Replace(".png", "");
+            return "[e]" + newStr + "[/e]";
+        }
+        /// <summary>
+        /// 将Document里的值都换成String
+        /// </summary>
+        /// <param name="fld"></param>
+        /// <returns></returns>
+        private string GetSendMessage(FlowDocument fld)
+        {
+            if (fld==null)
+            {
+                return string.Empty;
+            }
+            string resutStr = string.Empty;
+            foreach (var root in fld.Blocks)
+            {
+                foreach (var item in ((Paragraph)root).Inlines)
+                {
+                    //如果是Emoji则进行转换
+                    if (item is InlineUIContainer)
+                    {
+                        System.Windows.Controls.Image img = (System.Windows.Controls.Image)((InlineUIContainer)item).Child;
+                        resutStr += GetEmojiName(img.Source.ToString());
+                    }
+                    //如果是文本，则直接赋值
+                    if (item is Run)
+                    {
+                        resutStr += ((Run)item).Text;
+                    }
+                }
+            }
+            return resutStr;
+        }
         #endregion
 
         #region 聊天事件
@@ -682,7 +724,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 return _sendCommand ?? (_sendCommand = new RelayCommand(() =>
                     {
-                        Console.WriteLine(ShowSendMessage);
+                        SendMessage = GetSendMessage(ShowSendMessage);
                         if (!string.IsNullOrEmpty(SendMessage))
                         {
                             WeChatMsg msg = new WeChatMsg();
@@ -694,6 +736,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                             msg.Time = DateTime.Now;
                             _friendUser.SendMsg(msg, false);
                             SendMessage = string.Empty;
+                            ShowSendMessage.Blocks.Clear();
                         }
                         else
                         {
@@ -737,7 +780,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             chatmsg.Image = _me.Icon;
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.RightToLeft;
-            chatmsg.TbColor = (Brush)new BrushConverter().ConvertFromString("#FF98E165");
+            chatmsg.TbColor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF98E165");
             ChatList.Add(chatmsg);
         }
         /// <summary>
@@ -760,7 +803,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             });
             chatmsg.Message = msg.Msg;
             chatmsg.FlowDir = FlowDirection.LeftToRight;
-            chatmsg.TbColor = Brushes.White;
+            chatmsg.TbColor = System.Windows.Media.Brushes.White;
             ChatList.Add(chatmsg);
         }
         #endregion
