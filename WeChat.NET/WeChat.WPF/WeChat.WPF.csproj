@@ -89,6 +89,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\DLL\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -122,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\NotificationAreaIcon.cs" />
+    <Compile Include="Controls\RichTextBoxHelper.cs" />
     <Compile Include="Controls\ScrollingListBox.cs" />
     <Compile Include="Conver\BoolConvertVisibility.cs" />
     <Compile Include="Conver\CountConvertVisibility.cs" />

@@ -90,7 +90,7 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0">
                     <RadioButton x:Name="RB_Emoji" Grid.Row="0" Command="{Binding EmojiCommand}" Style="{StaticResource EmojiStyle}"/>
                 </StackPanel>
-                <TextBox Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0" Text="{Binding SendMessage}" TextWrapping="Wrap"/>
+                <RichTextBox x:Name="rtb" FontSize="20" Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0"/>
                 <TextBox Grid.Row="1" Visibility="{Binding Tootip_Visibility}" Text="不能发送空白信息" Background="White" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15,0" Style="{StaticResource ToolTipTextBoxStyle}" FontSize="13" Height="35" Width="110"/>
                 <Button Grid.Row="2" Command="{Binding SendCommand}" Content="发送(S)" Width="68" Height="26" FontSize="13" BorderBrush="Gray" Background="WhiteSmoke" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,15,0" Style="{StaticResource SendButtonStyle}"/>
             </Grid>
@@ -125,12 +125,12 @@
             </Grid>
         </Grid>
         <Popup x:Name="pop" PopupAnimation="Fade" PlacementTarget="{Binding ElementName=RB_Emoji}" Placement="Top" HorizontalOffset="-100" AllowsTransparency="True" StaysOpen="False" IsOpen="{Binding Emoji_Popup}">
-            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250">
-                <i:Interaction.Triggers>
+            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250" Close="EmojiTabControlUC_Close">
+                <!--<i:Interaction.Triggers>
                     <i:EventTrigger EventName="Close">
                         <mv:EventToCommand Command="{Binding PopupCloseCommand}" CommandParameter="{Binding ElementName=EmojiTabControlUC}"/>
                     </i:EventTrigger>
-                </i:Interaction.Triggers>
+                </i:Interaction.Triggers>-->
             </Emoji:EmojiTabControlUC>
         </Popup>
     </Grid>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -25,9 +26,9 @@ namespace WeChat.WPF.Modules.Main.View
         //Rect rcnormal;
         public MainUC()
         {
-            InitializeComponent();  
+            InitializeComponent();
         }
-        
+
         /// <summary>
         /// 鼠标左键拖动
         /// </summary>
@@ -124,7 +125,7 @@ namespace WeChat.WPF.Modules.Main.View
         {
             this.lastWindowState = WindowState == WindowState.Minimized ? lastWindowState : WindowState;
         }
-        
+
         private void Open()
         {
             WindowState = lastWindowState;
@@ -146,5 +147,16 @@ namespace WeChat.WPF.Modules.Main.View
         }
 
         #endregion
+
+        /// <summary>
+        /// 弹窗关闭，并给RichTextbox添加Emoji
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EmojiTabControlUC_Close(object sender, EventArgs e)
+        {
+            new InlineUIContainer(new Image { Source = EmojiTabControlUC.SelectEmoji.Value, Height = 20, Width = 20 }, rtb.Selection.Start);
+            pop.IsOpen = false;
+        }      
     }
 }

@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using WeChat.Tools.Helpers;
 using System.Windows.Threading;
 using WeChat.Emoji;
+using System.Windows.Documents;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
@@ -242,6 +243,24 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 _sendMessage = value;
                 RaisePropertyChanged("SendMessage");
+            }
+        }
+
+        private string _showSendMessage;
+        /// <summary>
+        /// 发送框显示的发送内容
+        /// </summary>
+        public string ShowSendMessage
+        {
+            get
+            {
+                return _showSendMessage;
+            }
+
+            set
+            {
+                _showSendMessage = value;
+                RaisePropertyChanged("ShowSendMessage");
             }
         }
 
@@ -663,6 +682,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             {
                 return _sendCommand ?? (_sendCommand = new RelayCommand(() =>
                     {
+                        Console.WriteLine(ShowSendMessage);
                         if (!string.IsNullOrEmpty(SendMessage))
                         {
                             WeChatMsg msg = new WeChatMsg();
@@ -770,8 +790,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             get
             {
                 return _popupCloseCommand ?? (_popupCloseCommand = new RelayCommand<EmojiTabControlUC>(p =>
-                    {
-                        SendMessage += p.SelectEmoji.Key;
+                    {                        
                         Emoji_Popup = false;
                     }));
             }
