@@ -10,6 +10,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mv="http://www.galasoft.ch/mvvmlight"
         xmlns:Emoji="clr-namespace:WeChat.Emoji;assembly=WeChat.Emoji"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
         Title="MainUC" Height="612" Width="852" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={x:Static ComManage:WeChatViewModelLocator.Instance},Path=MainViewModel}"
@@ -91,7 +92,13 @@
                     <RadioButton x:Name="RB_Emoji" Grid.Row="0" Command="{Binding EmojiCommand}" Style="{StaticResource EmojiStyle}"/>
                 </StackPanel>
                 <!--<RichTextBox x:Name="rtb" FontSize="20" Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0"/>-->
-                <controls:BindableRichTextBox x:Name="rtb" Document="{Binding ShowSendMessage,UpdateSourceTrigger=PropertyChanged}" FontSize="20" Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0"/>
+                <controls:BindableRichTextBox x:Name="rtb" Document="{Binding ShowSendMessage,UpdateSourceTrigger=PropertyChanged}" FontSize="20" Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0" AcceptsReturn="False">
+                    <i:Interaction.Triggers>
+                        <ei:KeyTrigger FiredOn="KeyUp" Key="Enter">
+                            <mv:EventToCommand Command="{Binding SendCommand}"/>
+                        </ei:KeyTrigger>
+                    </i:Interaction.Triggers>
+                </controls:BindableRichTextBox>
                 <TextBox Grid.Row="1" Visibility="{Binding Tootip_Visibility}" Text="不能发送空白信息" Background="White" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15,0" Style="{StaticResource ToolTipTextBoxStyle}" FontSize="13" Height="35" Width="110"/>
                 <Button Grid.Row="2" Command="{Binding SendCommand}" Content="发送(S)" Width="68" Height="26" FontSize="13" BorderBrush="Gray" Background="WhiteSmoke" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,15,0" Style="{StaticResource SendButtonStyle}"/>
             </Grid>
