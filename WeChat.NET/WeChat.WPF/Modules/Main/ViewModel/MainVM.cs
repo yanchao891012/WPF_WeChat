@@ -486,14 +486,20 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             timer.Stop();
         }
         /// <summary>
-        /// 获取Emoji名
+        /// 获取要发送的Emoji名
         /// </summary>
         /// <param name="str">相对路径的值</param>
         /// <returns></returns>
         private string GetEmojiName(string str)
         {
-            string newStr = str.Replace("pack://application:,,,/WeChat.Emoji;component/Image/emoji_", "").Replace(".png", "");
-            return "[e]" + newStr + "[/e]";
+            foreach (var item in ContantClass.EmojiCode)
+            {
+                if (item.Value.ToString().Equals(str))
+                {
+                    return item.Key;
+                }
+            }
+            return string.Empty;
         }
         /// <summary>
         /// 将Document里的值都换成String
