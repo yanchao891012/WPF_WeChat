@@ -155,7 +155,12 @@ namespace WeChat.WPF.Modules.Main.View
         /// <param name="e"></param>
         private void EmojiTabControlUC_Close(object sender, EventArgs e)
         {
-            new InlineUIContainer(new Image { Source = EmojiTabControlUC.SelectEmoji.Value, Height = 20, Width = 20 }, rtb.Selection.Start);
+            //将Emoji放入以后，把光标移动到刚插入的Emoji的结尾部分
+            var container=new InlineUIContainer(new Image { Source = EmojiTabControlUC.SelectEmoji.Value, Height = 20, Width = 20 }, rtb.CaretPosition);
+            rtb.CaretPosition = container.ElementEnd;
+
+            rtb.Focus();
+            
             pop.IsOpen = false;
         }      
     }
