@@ -575,15 +575,15 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// <summary>
         /// 将字符串转换成FlowDocument
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="str">原始字符串</param>
+        /// <param name="fld">要被赋值的Flowdocument</param>
+        /// <param name="par">要添加到Flowdocument里的Paragraph</param>
         private void StrToFlDoc(string str,FlowDocument fld,Paragraph par)
         {
+            //当递归结束以后，也就是长度为0的时候，就跳出
             if (str.Length <= 0)
             {
-                //FlowDocument fld = new FlowDocument();
                 fld.Blocks.Add(par);
-                //par.Inlines.Clear();
-                //return fld;
                 return;
             }
             //如果字符串里不存在[时，则直接添加内容
@@ -605,7 +605,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                     StrToFlDoc(str,fld, par);
                 }
                 else
-                {
+                {//如果第一位不是[的话，则是字符串，直接添加进去
                     par.Inlines.Add(new Run(GetTextByRegex(str)));
                     str = str.Remove(0, GetTextByRegex(str).Length);
                     StrToFlDoc(str,fld, par);
@@ -864,10 +864,9 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         {
             ChatMsg chatmsg = new ChatMsg();
             chatmsg.Image = _me.Icon;
+            //此处的Paragraph必须是新New的
             Paragraph par = new Paragraph();
-            //chatmsg.Message.Blocks.Add(par);
             StrToFlDoc(msg.Msg, chatmsg.Message,par);
-            //chatmsg.Message = StrToFlDoc(msg.Msg);
             chatmsg.FlowDir = FlowDirection.RightToLeft;
             chatmsg.TbColor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF98E165");
             ChatList.Add(chatmsg);
@@ -892,7 +891,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             });
             Paragraph par = new Paragraph();
             StrToFlDoc(msg.Msg, chatmsg.Message,par);
-            //chatmsg.Message = StrToFlDoc(msg.Msg);
             chatmsg.FlowDir = FlowDirection.LeftToRight;
             chatmsg.TbColor = System.Windows.Media.Brushes.White;
             ChatList.Add(chatmsg);

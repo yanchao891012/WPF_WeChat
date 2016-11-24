@@ -91,7 +91,6 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0">
                     <RadioButton x:Name="RB_Emoji" Grid.Row="0" Command="{Binding EmojiCommand}" Style="{StaticResource EmojiStyle}"/>
                 </StackPanel>
-                <!--<RichTextBox x:Name="rtb" FontSize="20" Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0"/>-->
                 <controls:BindableRichTextBox x:Name="rtb" Document="{Binding ShowSendMessage,UpdateSourceTrigger=PropertyChanged}" FontSize="15" Grid.Row="1" Background="#FFF9F9F9" Focusable="True" Margin="10,0" BorderThickness="0" AcceptsReturn="False">
                     <i:Interaction.Triggers>
                         <ei:KeyTrigger FiredOn="KeyUp" Key="Enter">
@@ -133,13 +132,7 @@
             </Grid>
         </Grid>
         <Popup x:Name="pop" PopupAnimation="Fade" PlacementTarget="{Binding ElementName=RB_Emoji}" Placement="Top" HorizontalOffset="-100" AllowsTransparency="True" StaysOpen="False" IsOpen="{Binding Emoji_Popup}">
-            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250" Close="EmojiTabControlUC_Close">
-                <!--<i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Close">
-                        <mv:EventToCommand Command="{Binding PopupCloseCommand}" CommandParameter="{Binding ElementName=EmojiTabControlUC}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>-->
-            </Emoji:EmojiTabControlUC>
+            <Emoji:EmojiTabControlUC x:Name="EmojiTabControlUC" Width="455" Height="250" Close="EmojiTabControlUC_Close"/>
         </Popup>
     </Grid>
 </Window>

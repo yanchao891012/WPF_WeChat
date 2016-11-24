@@ -391,7 +391,7 @@
                                     <Image Grid.Column="1" Source="{Binding Image}" Height="35" Width="35" VerticalAlignment="Top"/>
                                     <Path Grid.Column="2" StrokeThickness="1" Stroke="{Binding TbColor}" Data="M12,13 L5,18 L12,23Z" Fill="{Binding TbColor}" Margin="0" SnapsToDevicePixels="True"/>
                                     <!--<TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="{Binding Message}"/>-->
-                                    <controls:BindableRichTextBox Grid.Column="3" MaxWidth="355" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatRichTextBoxStyle}" FlowDirection="LeftToRight" Document="{Binding Message,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <controls:BindableRichTextBox x:Name="rtb" Grid.Column="3" Width="{Binding ElementName=rtb,Path=Document}" MaxWidth="355" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatRichTextBoxStyle}" FlowDirection="LeftToRight" Document="{Binding Message,UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>
