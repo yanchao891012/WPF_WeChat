@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using WeChat.Emoji;
 using System.Windows.Documents;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace WeChat.WPF.Modules.Main.ViewModel
 {
@@ -247,7 +248,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             }
         }
 
-        private FlowDocument _showSendMessage=new FlowDocument();
+        private FlowDocument _showSendMessage = new FlowDocument();
         /// <summary>
         /// 发送框显示的发送内容
         /// </summary>
@@ -336,6 +337,25 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 RaisePropertyChanged("Emoji_Popup");
             }
         }
+
+        //private Paragraph _par = new Paragraph();
+        ///// <summary>
+        ///// 段落
+        ///// </summary>
+        //public Paragraph Par
+        //{
+        //    get
+        //    {
+        //        return _par;
+        //    }
+
+        //    set
+        //    {
+        //        _par = value;
+        //        RaisePropertyChanged("Par");
+        //    }
+        //}
+
         #endregion
 
         #region 方法
@@ -508,7 +528,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// <returns></returns>
         private string GetSendMessage(FlowDocument fld)
         {
-            if (fld==null)
+            if (fld == null)
             {
                 return string.Empty;
             }
@@ -531,6 +551,66 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 }
             }
             return resutStr;
+        }
+        /// <summary>
+        /// 获取Emoji的名字
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private string GetEmojiNameByRegex(string str)
+        {
+            string name = Regex.Match(str, "(?<=\\[).*?(?=\\])").Value;
+            return "[" + name + "]";
+        }
+        /// <summary>
+        /// 获取文本信息
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private string GetTextByRegex(string str)
+        {
+            string text = Regex.Match(str, "^.*?(?=\\[)").Value;
+            return text;
+        }
+        /// <summary>
+        /// 将字符串转换成FlowDocument
+        /// </summary>
+        /// <param name="str"></param>
+        private void StrToFlDoc(string str,FlowDocument fld,Paragraph par)
+        {
+            if (str.Length <= 0)
+            {
+                //FlowDocument fld = new FlowDocument();
+                fld.Blocks.Add(par);
+                //par.Inlines.Clear();
+                //return fld;
+                return;
+            }
+            //如果字符串里不存在[时，则直接添加内容
+            if (!str.Contains('['))
+            {
+                par.Inlines.Add(new Run(str));
+                str = str.Remove(0, str.Length);
+                StrToFlDoc(str,fld, par);
+            }
+            else
+            {
+                //设置字符串长度
+                int strLength = str.Length;
+                //首先判断第一位是不是[，如果是，则证明是表情，用正则获取表情，然后将字符串长度进行移除，递归
+                if (str[0].Equals('['))
+                {
+                    par.Inlines.Add(new InlineUIContainer(new System.Windows.Controls.Image { Width = 20, Height = 20, Source = ContantClass.EmojiCode[GetEmojiNameByRegex(str)] }));
+                    str = str.Remove(0, GetEmojiNameByRegex(str).Length);
+                    StrToFlDoc(str,fld, par);
+                }
+                else
+                {
+                    par.Inlines.Add(new Run(GetTextByRegex(str)));
+                    str = str.Remove(0, GetTextByRegex(str).Length);
+                    StrToFlDoc(str,fld, par);
+                }
+            }
         }
         #endregion
 
@@ -784,7 +864,10 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         {
             ChatMsg chatmsg = new ChatMsg();
             chatmsg.Image = _me.Icon;
-            chatmsg.Message = msg.Msg;
+            Paragraph par = new Paragraph();
+            //chatmsg.Message.Blocks.Add(par);
+            StrToFlDoc(msg.Msg, chatmsg.Message,par);
+            //chatmsg.Message = StrToFlDoc(msg.Msg);
             chatmsg.FlowDir = FlowDirection.RightToLeft;
             chatmsg.TbColor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF98E165");
             ChatList.Add(chatmsg);
@@ -807,7 +890,9 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                     }
                 }
             });
-            chatmsg.Message = msg.Msg;
+            Paragraph par = new Paragraph();
+            StrToFlDoc(msg.Msg, chatmsg.Message,par);
+            //chatmsg.Message = StrToFlDoc(msg.Msg);
             chatmsg.FlowDir = FlowDirection.LeftToRight;
             chatmsg.TbColor = System.Windows.Media.Brushes.White;
             ChatList.Add(chatmsg);
@@ -839,7 +924,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             get
             {
                 return _popupCloseCommand ?? (_popupCloseCommand = new RelayCommand<EmojiTabControlUC>(p =>
-                    {                        
+                    {
                         Emoji_Popup = false;
                     }));
             }

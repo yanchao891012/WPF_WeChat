@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
                     xmlns:local="clr-namespace:WeChat.WPF"
-                    xmlns:conver="clr-namespace:WeChat.WPF.Conver">
+                    xmlns:conver="clr-namespace:WeChat.WPF.Conver"
+                    xmlns:controls="clr-namespace:WeChat.WPF.Controls">
     <conver:ModelConvertVisibility x:Key="modelToVisibility"/>
     <conver:ObjectConvertColor x:Key="objectToColor"/>
     <conver:ObjectConvertHeight x:Key="objectToHeight"/>
@@ -341,6 +342,32 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="ChatRichTextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type RichTextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RichTextBox}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="0">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="3"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <SolidColorBrush x:Key="ListBorder" Color="#FFEAEAEA"/>
     <Style x:Key="ChatListBoxStyle" TargetType="{x:Type ListBox}">
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -363,7 +390,8 @@
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" FlowDirection="{Binding FlowDir}" Margin="15,5">
                                     <Image Grid.Column="1" Source="{Binding Image}" Height="35" Width="35" VerticalAlignment="Top"/>
                                     <Path Grid.Column="2" StrokeThickness="1" Stroke="{Binding TbColor}" Data="M12,13 L5,18 L12,23Z" Fill="{Binding TbColor}" Margin="0" SnapsToDevicePixels="True"/>
-                                    <TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="{Binding Message}"/>
+                                    <!--<TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="{Binding Message}"/>-->
+                                    <controls:BindableRichTextBox Grid.Column="3" MaxWidth="355" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatRichTextBoxStyle}" FlowDirection="LeftToRight" Document="{Binding Message,UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>

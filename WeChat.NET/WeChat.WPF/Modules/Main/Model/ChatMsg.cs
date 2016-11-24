@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace WeChat.WPF.Modules.Main.Model
@@ -25,11 +26,11 @@ namespace WeChat.WPF.Modules.Main.Model
             }
         }
 
-        private string _message;
+        private FlowDocument _message=new FlowDocument();
         /// <summary>
         /// 显示的内容
         /// </summary>
-        public string Message
+        public FlowDocument Message
         {
             get
             {
