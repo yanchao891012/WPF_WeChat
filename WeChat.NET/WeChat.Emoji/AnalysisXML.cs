@@ -87,9 +87,9 @@ namespace WeChat.Emoji
         private BitmapImage GetEmojiImage(string name)
         {
             BitmapImage bitmap = new BitmapImage();
-            string imgUrl = "/WeChat.Emoji;component/Image/" + name + ".png";
+            string imgUrl = "pack://application:,,,/WeChat.Emoji;component/Image/" + name + ".png";
             bitmap.BeginInit();
-            bitmap.UriSource = new Uri(imgUrl, UriKind.Relative);
+            bitmap.UriSource = new Uri(imgUrl, UriKind.RelativeOrAbsolute);
             bitmap.EndInit();
             return bitmap;
         }

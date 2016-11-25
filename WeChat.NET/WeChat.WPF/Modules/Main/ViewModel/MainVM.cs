@@ -337,25 +337,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 RaisePropertyChanged("Emoji_Popup");
             }
         }
-
-        //private Paragraph _par = new Paragraph();
-        ///// <summary>
-        ///// 段落
-        ///// </summary>
-        //public Paragraph Par
-        //{
-        //    get
-        //    {
-        //        return _par;
-        //    }
-
-        //    set
-        //    {
-        //        _par = value;
-        //        RaisePropertyChanged("Par");
-        //    }
-        //}
-
+           
         #endregion
 
         #region 方法
@@ -909,21 +891,6 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                 return _emojiCommand ?? (_emojiCommand = new RelayCommand(() =>
                     {
                         Emoji_Popup = true;
-                    }));
-            }
-        }
-
-        private RelayCommand<EmojiTabControlUC> _popupCloseCommand;
-        /// <summary>
-        /// Popup关闭事件
-        /// </summary>
-        public RelayCommand<EmojiTabControlUC> PopupCloseCommand
-        {
-            get
-            {
-                return _popupCloseCommand ?? (_popupCloseCommand = new RelayCommand<EmojiTabControlUC>(p =>
-                    {
-                        Emoji_Popup = false;
                     }));
             }
         }
