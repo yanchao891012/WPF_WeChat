@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using WeChat.HTTP;
 
@@ -424,11 +425,11 @@ namespace WeChat.WPF.Modules.Main.Model
             }
         }
 
-        private string _lastMsg;
+        private FlowDocument _lastMsg=new FlowDocument();
         /// <summary>
         /// 最后的消息
         /// </summary>
-        public string LastMsg
+        public FlowDocument LastMsg
         {
             get
             {

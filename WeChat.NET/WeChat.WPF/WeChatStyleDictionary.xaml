@@ -151,6 +151,11 @@
         <Setter Property="Foreground" Value="Gray"/>
         <Setter Property="FontSize" Value="15"/>
     </Style>
+    <LinearGradientBrush x:Key="TextBoxBorder" StartPoint="0,0" MappingMode="Absolute" EndPoint="0,20">
+        <GradientStop Color="#ABADB3" Offset="0.05"/>
+        <GradientStop Color="#E2E3EA" Offset="0.07"/>
+        <GradientStop Color="#E3E9EF" Offset="1"/>
+    </LinearGradientBrush>
     <!--通讯录列表样式-->
     <Style x:Key="ListBoxItemFriendStyle" TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">
@@ -175,6 +180,28 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!--最后一次信息-->
+    <Style x:Key="LastChatRichTextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type RichTextBox}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RichTextBox}">
+                    <Border x:Name="br" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="0">
+                        <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Margin="3"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--聊天列表样式-->
     <Style x:Key="ListBoxItemChatStyle" TargetType="{x:Type ListBoxItem}">
         <Setter Property="Template">
@@ -193,7 +220,8 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Text="{Binding ShowName}" FontSize="15" HorizontalAlignment="Left" Margin="5,10,0,0"/>
                                 <TextBlock Grid.Row="0" Text="{Binding LastTime}" FontSize="15" HorizontalAlignment="Right" Margin="0,10,5,0"/>
-                                <TextBlock Grid.Row="1" Text="{Binding LastMsg}" FontSize="12" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                                <!--<TextBlock Grid.Row="1" Text="{Binding LastMsg}" FontSize="12" HorizontalAlignment="Left" Margin="5,0,0,0"/>-->
+                                <controls:BindableRichTextBox Grid.Row="1" Foreground="Black" Background="Transparent" IsReadOnly="True" BorderThickness="0" BorderBrush="Transparent" Document="{Binding LastMsg,UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Left" VirtualizingStackPanel.VirtualizationMode="Standard" Margin="5,0,0,0" IsHitTestVisible="False" Style="{StaticResource LastChatRichTextBoxStyle}"/>
                             </Grid>
                         </StackPanel>
                     </Border>
@@ -311,11 +339,6 @@
         </Setter>
     </Style>
 
-    <LinearGradientBrush x:Key="TextBoxBorder" StartPoint="0,0" MappingMode="Absolute" EndPoint="0,20">
-        <GradientStop Color="#ABADB3" Offset="0.05"/>
-        <GradientStop Color="#E2E3EA" Offset="0.07"/>
-        <GradientStop Color="#E3E9EF" Offset="1"/>
-    </LinearGradientBrush>
     <!--圆角聊天内容框-->
     <Style x:Key="ChatTextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type TextBox}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -342,7 +365,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    <!--圆角聊天内容框-->
     <Style x:Key="ChatRichTextBoxStyle" BasedOn="{x:Null}" TargetType="{x:Type RichTextBox}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
@@ -391,7 +414,7 @@
                                     <Image Grid.Column="1" Source="{Binding Image}" Height="35" Width="35" VerticalAlignment="Top"/>
                                     <Path Grid.Column="2" StrokeThickness="1" Stroke="{Binding TbColor}" Data="M12,13 L5,18 L12,23Z" Fill="{Binding TbColor}" Margin="0" SnapsToDevicePixels="True"/>
                                     <!--<TextBox Grid.Column="3" MaxWidth="355" TextWrapping="Wrap" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatTextBoxStyle}" FlowDirection="LeftToRight" Text="{Binding Message}"/>-->
-                                    <controls:BindableRichTextBox x:Name="rtb" Grid.Column="3" Width="{Binding ElementName=rtb,Path=Document}" MaxWidth="355" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatRichTextBoxStyle}" FlowDirection="LeftToRight" Document="{Binding Message,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <controls:BindableRichTextBox Grid.Column="3" MaxWidth="355" FontSize="15" BorderBrush="{Binding TbColor}" Background="{Binding TbColor}" IsReadOnly="True" BorderThickness="0" Style="{StaticResource ChatRichTextBoxStyle}" FlowDirection="LeftToRight" Document="{Binding Message,UpdateSourceTrigger=PropertyChanged}"/>
                                 </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>

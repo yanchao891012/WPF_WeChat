@@ -666,16 +666,22 @@ namespace WeChat.WPF.Modules.Main.ViewModel
                                                                 if (unReadList != null)//未读消息
                                                                 {
                                                                     user.LastTime = unReadList[unReadList.Count - 1].Time.ToShortTimeString();
-                                                                    user.LastMsg = unReadList[unReadList.Count - 1].Msg.ToString();
-                                                                    user.LastMsg = user.LastMsg.Length <= 10 ? user.LastMsg : user.LastMsg.Substring(0, 10) + "……";
+                                                                    //user.LastMsg = unReadList[unReadList.Count - 1].Msg.ToString();
+                                                                    //user.LastMsg = user.LastMsg.Length <= 10 ? user.LastMsg : user.LastMsg.Substring(0, 10) + "……";
+                                                                    //string str = unReadList[unReadList.Count - 1].Msg.ToString().Length <= 10 ? unReadList[unReadList.Count - 1].Msg : unReadList[unReadList.Count - 1].Msg.Substring(0, 10) + "……";
+                                                                    string str = unReadList[unReadList.Count - 1].Msg;
+                                                                    StrToFlDoc(str, user.LastMsg = new FlowDocument(), new Paragraph());
                                                                 }
                                                                 else//最新消息
                                                                 {
                                                                     if (latestMsg != null)
                                                                     {
                                                                         user.LastTime = latestMsg.Time.ToShortTimeString();
-                                                                        user.LastMsg = latestMsg.Msg.ToString();
-                                                                        user.LastMsg = user.LastMsg.Length <= 10 ? user.LastMsg : user.LastMsg.Substring(0, 10) + "……";
+                                                                        //user.LastMsg = latestMsg.Msg.ToString();
+                                                                        //user.LastMsg = user.LastMsg.Length <= 10 ? user.LastMsg : user.LastMsg.Substring(0, 10) + "……";
+                                                                        //string str = latestMsg.Msg.ToString().Length <= 10 ? latestMsg.Msg.ToString() : latestMsg.Msg.ToString().Substring(0, 10) + "……";
+                                                                        string str = latestMsg.Msg;
+                                                                        StrToFlDoc(str, user.LastMsg = new FlowDocument(), new Paragraph());
                                                                     }
                                                                 }
 
@@ -844,14 +850,21 @@ namespace WeChat.WPF.Modules.Main.ViewModel
         /// <param name="msg"></param>
         private void ShowSendMsg(WeChatMsg msg)
         {
-            ChatMsg chatmsg = new ChatMsg();
-            chatmsg.Image = _me.Icon;
-            //此处的Paragraph必须是新New的
-            Paragraph par = new Paragraph();
-            StrToFlDoc(msg.Msg, chatmsg.Message,par);
-            chatmsg.FlowDir = FlowDirection.RightToLeft;
-            chatmsg.TbColor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF98E165");
-            ChatList.Add(chatmsg);
+            try
+            {
+                ChatMsg chatmsg = new ChatMsg();
+                chatmsg.Image = _me.Icon;
+                //此处的Paragraph必须是新New的
+                Paragraph par = new Paragraph();
+                StrToFlDoc(msg.Msg, chatmsg.Message, par);
+                chatmsg.FlowDir = FlowDirection.RightToLeft;
+                chatmsg.TbColor = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#FF98E165");
+                ChatList.Add(chatmsg);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
         /// <summary>
         /// 显示收到的信息
