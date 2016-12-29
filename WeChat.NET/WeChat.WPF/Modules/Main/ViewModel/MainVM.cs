@@ -440,7 +440,7 @@ namespace WeChat.WPF.Modules.Main.ViewModel
             //讨论组
             if (_userName.Contains("@@"))
             {
-                _icon = wcs.GetIcon(_userName, StaticUrl.Url_GetHeadImg);
+                _icon = wcs.GetIcon(_userName,StaticUrl.stringWx+ StaticUrl.Url_GetHeadImg);
             }
             //好友
             else if (_userName.Contains("@"))

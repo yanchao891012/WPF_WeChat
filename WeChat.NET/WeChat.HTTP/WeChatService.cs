@@ -29,7 +29,7 @@ namespace WeChat.HTTP
             if (sid != null && uin != null)
             {
                 init_json = string.Format(init_json, uin.Value, sid.Value);
-                byte[] bytes = BaseService.Request(StaticUrl.Url_Init + TimeHelper.GetTimeStamp() + "&pass_ticket=" + LoginService.Pass_Ticket, MethodEnum.POST, init_json);
+                byte[] bytes = BaseService.Request(StaticUrl.stringWx+ StaticUrl.Url_Init + TimeHelper.GetTimeStamp() + "&pass_ticket=" + LoginService.Pass_Ticket, MethodEnum.POST, init_json);
                 string init_str = Encoding.UTF8.GetString(bytes);
 
                 JObject init_result = JsonConvert.DeserializeObject(init_str) as JObject;
@@ -49,8 +49,12 @@ namespace WeChat.HTTP
         /// <param name="username">用户名或群组名</param>
         /// <param name="url">个人或群组URL</param>
         /// <returns></returns>
-        public ImageSource GetIcon(string username, string url = StaticUrl.Url_GetIcon)
+        public ImageSource GetIcon(string username, string url = "")
         {
+            if (string.IsNullOrEmpty(url))
+            {
+                url =StaticUrl.stringWx+ StaticUrl.Url_GetIcon;
+            }
             byte[] bytes = BaseService.Request(url + username, MethodEnum.GET);
             return ImageHelper.MemoryToImageSourceOther(new MemoryStream(bytes));
         }
@@ -60,7 +64,7 @@ namespace WeChat.HTTP
         /// <returns></returns>
         public JObject GetContact()
         {
-            byte[] bytes = BaseService.Request(StaticUrl.Url_GetContact, MethodEnum.GET);
+            byte[] bytes = BaseService.Request(StaticUrl.stringWx+ StaticUrl.Url_GetContact, MethodEnum.GET);
             string contact_str = Encoding.UTF8.GetString(bytes);
             return JsonConvert.DeserializeObject(contact_str) as JObject;
         }
@@ -83,7 +87,7 @@ namespace WeChat.HTTP
             if (sid != null && uin != null)
             {
                 StaticUrl.Url_SyncCheck_ext = string.Format(StaticUrl.Url_SyncCheck_ext, sid.Value, uin.Value, sync_key, TimeHelper.GetTimeStamp(), LoginService.SKey.Replace("@", "%40"), "e" + NumHelper.RandomNum(15));
-                byte[] bytes = BaseService.Request(StaticUrl.Url_SyncCheck + StaticUrl.Url_SyncCheck_ext + DateTime.Now.Ticks, MethodEnum.GET);
+                byte[] bytes = BaseService.Request(StaticUrl.stringWebPush+ StaticUrl.Url_SyncCheck + StaticUrl.Url_SyncCheck_ext + DateTime.Now.Ticks, MethodEnum.GET);
                 if (bytes != null)
                 {
                     return Encoding.UTF8.GetString(bytes);
@@ -115,7 +119,7 @@ namespace WeChat.HTTP
             if (sid != null && uin != null)
             {
                 StaticUrl.Url_Sync_ext = string.Format(StaticUrl.Url_Sync_ext, sid.Value, LoginService.SKey, LoginService.Pass_Ticket);
-                byte[] bytes = BaseService.Request(StaticUrl.Url_Sync + StaticUrl.Url_Sync_ext, MethodEnum.POST, sync_json);
+                byte[] bytes = BaseService.Request(StaticUrl.stringWx+ StaticUrl.Url_Sync + StaticUrl.Url_Sync_ext, MethodEnum.POST, sync_json);
                 string sync_str = Encoding.UTF8.GetString(bytes);
 
                 JObject sync_result = JsonConvert.DeserializeObject(sync_str) as JObject;
@@ -165,7 +169,7 @@ namespace WeChat.HTTP
             if (sid != null && uin != null)
             {
                 msg_json = string.Format(msg_json, sid.Value, uin.Value, msg, from, to, type, LoginService.SKey, DateTime.Now.Millisecond, DateTime.Now.Millisecond, DateTime.Now.Millisecond);
-                byte[] bytes = BaseService.Request(StaticUrl.Url_SendMsg + sid.Value + "&pass_ticket=" + LoginService.Pass_Ticket, MethodEnum.POST, msg_json);
+                byte[] bytes = BaseService.Request(StaticUrl.stringWx+ StaticUrl.Url_SendMsg + sid.Value + "&pass_ticket=" + LoginService.Pass_Ticket, MethodEnum.POST, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
             }
         }

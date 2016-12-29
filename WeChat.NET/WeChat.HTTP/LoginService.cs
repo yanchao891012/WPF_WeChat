@@ -30,11 +30,36 @@ namespace WeChat.HTTP
             //请求二维码
             bytes = BaseService.Request(StaticUrl.Url_GetQrCode + session_id, MethodEnum.GET);
             //转换成图片
+
+            //MemoryStream stream = new MemoryStream(bytes);
+            //Bitmap bitmap = new Bitmap(stream);
+            ////bitmap.MakeTransparent(System.Drawing.Color.White);
+            //System.Drawing.Color curColor;
+            //byte[] newbytes = new byte[bitmap.Width * bitmap.Height];
+            //for (int x = 0; x < bitmap.Width; x++)
+            //{
+            //    for (int y = 0; y < bitmap.Height; y++)
+            //    {
+            //        curColor = bitmap.GetPixel(x, y);
+            //        if (curColor.ToArgb() == System.Drawing.Color.White.ToArgb())
+            //        {
+            //            newbytes[x * y] = (byte)(0X00FFFFFF & 0x000000FF);
+            //        }
+            //        else
+            //        {
+            //            newbytes[x * y] = (byte)(0XFF000000 & 0x000000FF);
+            //        }
+            //    }
+            //}
+            //MemoryStream ms = new MemoryStream();
+            //bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+
             //BitmapImage bi = new BitmapImage();
             //bi.BeginInit();
-            //bi.StreamSource = new MemoryStream(bytes);
+            //bi.StreamSource = new MemoryStream(newbytes);
             //bi.EndInit();
             //return bi;
+
             return ImageHelper.MemoryToImageSource(new MemoryStream(bytes));
         }
         /// <summary>
@@ -46,13 +71,49 @@ namespace WeChat.HTTP
             if (session_id == null)
                 return null;
             //查看是否扫码登录了
-            byte[] bytes = BaseService.Request(StaticUrl.Url_WaitLogin + session_id + "&tip=0&r="+TimeHelper.GetTimeStamp_TakeBack() + "&_=" + TimeHelper.GetTimeStamp(), MethodEnum.GET);
+            byte[] bytes = BaseService.Request(StaticUrl.Url_WaitLogin + session_id + "&tip=0&r=" + TimeHelper.GetTimeStamp_TakeBack() + "&_=" + TimeHelper.GetTimeStamp(), MethodEnum.GET);
 
             string login_result = Encoding.UTF8.GetString(bytes);
 
             if (login_result.Contains("=" + StaticCode.LoginCode.code_LoginSuccess))
             {
                 string login_redirect_url = login_result.Split(new string[] { "\"" }, StringSplitOptions.None)[1];
+                string string_url_front = login_redirect_url.Split(new string[] { "?" }, StringSplitOptions.None)[0];
+                if (string_url_front.IndexOf("wx2.qq.com")>-1)
+                {
+                    StaticUrl.stringWx = "https://wx2.qq.com";
+                    StaticUrl.stringWebPush = "https://webpush2.weixin.qq.com";
+                }
+                if (string_url_front.IndexOf("wx.qq.com") >-1)
+                {
+                    StaticUrl.stringWx = "https://wx.qq.com";
+                    StaticUrl.stringWebPush = "https://webpush.weixin.qq.com";
+                }
+                if (string_url_front.IndexOf("web1.wechat.com") > -1)
+                {
+                    StaticUrl.stringWx = "https://web.wechat.com";
+                    StaticUrl.stringWebPush = "https://webpush1.wechat.com";
+                }
+                if (string_url_front.IndexOf("web2.wechat.com") > -1)
+                {
+                    StaticUrl.stringWx = "https://web.wechat.com";
+                    StaticUrl.stringWebPush = "https://webpush2.wechat.com";
+                }
+                if (string_url_front.IndexOf("web.wechat.com") > -1)
+                {
+                    StaticUrl.stringWx = "https://web.wechat.com";
+                    StaticUrl.stringWebPush = "https://webpush.wechat.com";
+                }
+                if (string_url_front.IndexOf("web1.wechatapp.com") > -1)
+                {
+                    StaticUrl.stringWx = "https://web.wechatapp.com";
+                    StaticUrl.stringWebPush = "https://webpush1.wechatapp.com";
+                }
+                if (string_url_front.IndexOf("web.wechatapp.com") > -1)
+                {
+                    StaticUrl.stringWx = "https://web.wechatapp.com";
+                    StaticUrl.stringWebPush = "https://webpush.wechatapp.com";
+                }
                 return login_redirect_url;
             }
             else if (login_result.Contains("=" + StaticCode.LoginCode.code_LoginWait))
