@@ -30,37 +30,7 @@ namespace WeChat.HTTP
             //请求二维码
             bytes = BaseService.Request(StaticUrl.Url_GetQrCode + session_id, MethodEnum.GET);
             //转换成图片
-
-            //MemoryStream stream = new MemoryStream(bytes);
-            //Bitmap bitmap = new Bitmap(stream);
-            ////bitmap.MakeTransparent(System.Drawing.Color.White);
-            //System.Drawing.Color curColor;
-            //byte[] newbytes = new byte[bitmap.Width * bitmap.Height];
-            //for (int x = 0; x < bitmap.Width; x++)
-            //{
-            //    for (int y = 0; y < bitmap.Height; y++)
-            //    {
-            //        curColor = bitmap.GetPixel(x, y);
-            //        if (curColor.ToArgb() == System.Drawing.Color.White.ToArgb())
-            //        {
-            //            newbytes[x * y] = (byte)(0X00FFFFFF & 0x000000FF);
-            //        }
-            //        else
-            //        {
-            //            newbytes[x * y] = (byte)(0XFF000000 & 0x000000FF);
-            //        }
-            //    }
-            //}
-            //MemoryStream ms = new MemoryStream();
-            //bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-
-            //BitmapImage bi = new BitmapImage();
-            //bi.BeginInit();
-            //bi.StreamSource = new MemoryStream(newbytes);
-            //bi.EndInit();
-            //return bi;
-
-            return ImageHelper.MemoryToImageSource(new MemoryStream(bytes));
+            return ImageHelper.MemoryToImageSource_Transparent(new MemoryStream(bytes));
         }
         /// <summary>
         /// 登录扫描检测
